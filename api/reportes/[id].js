@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: `Estado inválido. Válidos: ${ESTADOS_VALIDOS.join(', ')}` });
     }
 
-    const updated = updateReporteEstado(id, estado);
+    const updated = await updateReporteEstado(id, estado);
     if (!updated) return res.status(404).json({ error: 'Reporte no encontrado' });
 
     console.log(`[Reportes PATCH] ${id} → ${estado}`);

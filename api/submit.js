@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     };
 
     console.log('[Submit] Guardando reporte:', finalReport.id);
-    appendReporte(finalReport);
+    await appendReporte(finalReport);
     await sendNotification(finalReport);
 
     return res.status(200).json(finalReport);

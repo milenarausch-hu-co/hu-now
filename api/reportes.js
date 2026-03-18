@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Método no permitido' });
 
   try {
-    const reportes = readReportes();
+    const reportes = await readReportes();
     const ordenados = reportes.sort(
       (a, b) => new Date(b.fecha_generacion_reporte) - new Date(a.fecha_generacion_reporte)
     );

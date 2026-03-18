@@ -1,4 +1,4 @@
-import { buscarReportes } from '../lib/storage.js';
+import { buscarReportes, buscarPorLegajo } from '../lib/storage.js';
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -9,9 +9,15 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).json({ error: 'Método no permitido' });
 
   try {
+    const legajo = req.query?.legajo ?? '';
     const q = req.query?.q ?? '';
-    const resultados = buscarReportes(q);
-    console.log(`[mis-reportes] q="${q}" → ${resultados.length} resultados`);
+    let resultados;
+    if (legajo) {
+      resultados = await buscarPorLegajo(legajo);
+    } else {
+      resultados = await buscarReportes(q);
+    }
+    console.log(`[mis-reportes] legajo="${legajo}" q="${q}" → ${resultados.length} resultados`);
     return res.status(200).json(resultados);
   } catch (err) {
     console.error('[mis-reportes] Error:', err.message);
