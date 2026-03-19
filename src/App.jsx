@@ -80,7 +80,7 @@ function displayVal(key, value) {
 }
 
 // ── Logo Component - Official logo image ───────────────────────────────────
-const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png?v=2';
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png';
 
 function HuNowLogo({ size = 'md' }) {
   const maxWidths = {
@@ -94,7 +94,6 @@ function HuNowLogo({ size = 'md' }) {
       src={LOGO_URL} 
       alt="HU NOW" 
       className={`${maxWidths[size]} h-auto`}
-      style={{ mixBlendMode: 'multiply' }}
     />
   );
 }
@@ -709,7 +708,7 @@ function WelcomeScreen({ onConfirm }) {
   );
 }
 
-// ── Main App ──────────────────────────────────────────────��───������────────────
+// ── Main App ────────────────────────────────────��─────────��───������────────────
 export default function App() {
   const [legajo, setLegajo] = useState(() => localStorage.getItem(STORAGE_KEY));
 

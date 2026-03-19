@@ -18,7 +18,7 @@ const ESTADO_COLORS = {
 };
 
 // ── Logo Component - Official logo image ───────────────────────────────────
-const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png?v=2';
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png';
 
 function HuNowLogo() {
   return (
@@ -27,7 +27,6 @@ function HuNowLogo() {
         src={LOGO_URL} 
         alt="HU NOW" 
         className="max-w-[100px] h-auto"
-        style={{ mixBlendMode: 'multiply' }}
       />
       <span className="text-xs font-medium text-[#64748B] border-l border-[#E0EEFF] pl-3">Panel de gestión</span>
     </div>
