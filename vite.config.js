@@ -156,7 +156,7 @@ function apiMiddleware() {
           cors(res, 'GET, OPTIONS');
           try {
             const { readReportes } = await import('./lib/storage.js');
-            const reportes = readReportes();
+            const reportes = await readReportes();
             const ordenados = [...reportes].sort(
               (a, b) => new Date(b.fecha_generacion_reporte) - new Date(a.fecha_generacion_reporte)
             );
@@ -175,7 +175,7 @@ function apiMiddleware() {
             const rawUrl = new URL(req.url, 'http://localhost');
             const legajo = rawUrl.searchParams.get('legajo') || '';
             const q = rawUrl.searchParams.get('q') || '';
-            const resultados = legajo ? buscarPorLegajo(legajo) : buscarReportes(q);
+            const resultados = legajo ? await buscarPorLegajo(legajo) : await buscarReportes(q);
             console.log(`[API/mis-reportes] legajo="${legajo}" q="${q}" → ${resultados.length} resultados`);
             return jsonRes(res, 200, resultados);
           } catch (err) {
