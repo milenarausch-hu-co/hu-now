@@ -29,6 +29,23 @@ const FIELD_LABELS = {
   responsable_sugerido:    'Responsable sugerido',
 };
 
+const FIELD_ICONS = {
+  nombre_reportante:       'user',
+  fecha_hora_incidente:    'calendar',
+  tipo:                    'tag',
+  area:                    'building',
+  ubicacion:               'location',
+  descripcion_corta:       'text',
+  descripcion_formal:      'document',
+  personas_afectadas:      'users',
+  testigos:                'eye',
+  sistemas_involucrados:   'gear',
+  requiere_atencion_medica:'medical',
+  acciones_ya_tomadas:     'check',
+  urgencia:                'alert',
+  responsable_sugerido:    'person',
+};
+
 // ── Validation ─────────────────────────────────────────────────────────────
 const CAMPOS_OBLIGATORIOS = [
   { key: 'nombre_reportante',    pregunta: '¿Cuál es tu nombre?' },
@@ -62,6 +79,25 @@ function displayVal(key, value) {
   return String(value);
 }
 
+// ── Logo Component - Official logo image ───────────────────────────────────
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png?v=2';
+
+function HuNowLogo({ size = 'md' }) {
+  const maxWidths = {
+    sm: 'max-w-[100px]',
+    md: 'max-w-[100px]',
+    lg: 'max-w-[160px]',
+  };
+  
+  return (
+    <img 
+      src={LOGO_URL} 
+      alt="HU NOW" 
+      className={`${maxWidths[size]} h-auto`}
+    />
+  );
+}
+
 // ── Icons ──────────────────────────────────────────────────────────────────
 function MicIcon({ className }) {
   return (
@@ -84,7 +120,7 @@ function StopIcon({ className }) {
 
 function PencilIcon() {
   return (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
     </svg>
@@ -93,34 +129,65 @@ function PencilIcon() {
 
 function CheckIcon() {
   return (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="20 6 9 17 4 12" />
     </svg>
   );
 }
 
-function WaveAnimation({ small }) {
-  const bars = small ? 4 : 5;
-  const cls = small
-    ? 'wave-bar w-1 h-4 bg-red-400 rounded-full origin-bottom'
-    : 'wave-bar w-1.5 h-8 bg-red-500 rounded-full origin-bottom';
+function FieldIcon({ type, className = "w-4 h-4" }) {
+  const icons = {
+    user: <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />,
+    calendar: <><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>,
+    tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><circle cx="7" cy="7" r="1" /></>,
+    building: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
+    location: <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></>,
+    text: <><line x1="17" y1="10" x2="3" y2="10" /><line x1="21" y1="6" x2="3" y2="6" /><line x1="21" y1="14" x2="3" y2="14" /><line x1="17" y1="18" x2="3" y2="18" /></>,
+    document: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></>,
+    users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
+    eye: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>,
+    gear: <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></>,
+    medical: <><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></>,
+    check: <><polyline points="20 6 9 17 4 12" /></>,
+    alert: <><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></>,
+    person: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>,
+  };
   return (
-    <div className={`flex items-center justify-center gap-1 ${small ? 'h-6' : 'h-10'}`}>
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      {icons[type] || icons.text}
+    </svg>
+  );
+}
+
+function WaveAnimation({ small, neon }) {
+  const bars = small ? 4 : 5;
+  const color = neon ? 'bg-[#0EA5E9]' : 'bg-white';
+  const cls = small
+    ? `wave-bar w-1 h-5 ${color} rounded-full origin-bottom`
+    : `wave-bar w-2 h-10 ${color} rounded-full origin-bottom`;
+  return (
+    <div className={`flex items-center justify-center gap-1 ${small ? 'h-6' : 'h-12'}`}>
       {[...Array(bars)].map((_, i) => <div key={i} className={cls} />)}
     </div>
   );
 }
 
-function Spinner({ small }) {
+function Spinner({ small, light }) {
+  const baseColor = light ? 'border-white/30' : 'border-[#E0EEFF]';
+  const spinColor = light ? 'border-t-white' : 'border-t-[#0EA5E9]';
   return (
-    <div className={`spinner border-gray-200 border-t-[#7c3aed] rounded-full ${small ? 'w-5 h-5 border-2' : 'w-12 h-12 border-4'}`} />
+    <div className={`spinner ${baseColor} ${spinColor} rounded-full ${small ? 'w-5 h-5 border-2' : 'w-12 h-12 border-4'}`} />
   );
 }
 
 function UrgencyBadge({ urgencia }) {
-  const colors = { Alta: 'bg-red-500', Media: 'bg-yellow-500', Baja: 'bg-green-500' };
+  const colors = { 
+    Alta: 'bg-red-500 text-white', 
+    Media: 'bg-amber-500 text-white', 
+    Baja: 'bg-green-500 text-white' 
+  };
   return (
-    <span className={`${colors[urgencia] || 'bg-gray-400'} text-white text-xs font-semibold px-3 py-1 rounded-full`}>
+    <span className={`${colors[urgencia] || 'bg-[#64748B] text-white'} text-xs font-bold px-3 py-1.5 rounded-full`}>
       {urgencia}
     </span>
   );
@@ -128,7 +195,7 @@ function UrgencyBadge({ urgencia }) {
 
 // ── Mic recorder hook ──────────────────────────────────────────────────────
 function useMicRecorder(onBlob) {
-  const [recState, setRecState] = useState('idle'); // idle | recording | processing
+  const [recState, setRecState] = useState('idle');
   const [seconds, setSeconds] = useState(0);
   const mediaRef = useRef(null);
   const chunksRef = useRef([]);
@@ -176,7 +243,7 @@ function useMicRecorder(onBlob) {
   return { recState, seconds, start, stop };
 }
 
-// ── MicBlock: unified mic UI with required-fields awareness ───────────────
+// ── MicBlock ───────────────────────────────────────────────────────────────
 function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
   const allDone = camposFaltantes.length === 0;
 
@@ -198,29 +265,28 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
 
   const { recState, seconds, start, stop } = useMicRecorder(handleBlob);
 
-  // ── State B — all fields complete ──
   if (allDone) {
     return (
-      <div className="flex items-center justify-center gap-3 py-3">
+      <div className="flex items-center justify-center gap-3 py-4">
         {recState === 'idle' && (
           <button
             onClick={start}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full text-sm font-medium transition"
+            className="flex items-center gap-2 px-5 py-3 bg-[#0F2B5B] hover:bg-[#1E3A8A] text-white rounded-full text-sm font-bold transition shadow-neon"
           >
-            <MicIcon className="w-4 h-4" /> ¿Querés agregar algo más?
+            <MicIcon className="w-4 h-4 text-[#0EA5E9]" /> ¿Querés agregar algo más?
           </button>
         )}
         {recState === 'recording' && (
-          <div className="flex items-center gap-3">
-            <button onClick={stop} className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-full text-sm font-medium">
-              <StopIcon className="w-3.5 h-3.5" /> Detener
+          <div className="flex items-center gap-4 bg-[#0F2B5B] px-5 py-3 rounded-full glow-neon-intense">
+            <button onClick={stop} className="flex items-center gap-2 text-white text-sm font-bold">
+              <StopIcon className="w-4 h-4" /> Detener
             </button>
-            <span className="text-red-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
-            <WaveAnimation small />
+            <span className="text-[#0EA5E9] font-mono text-sm font-bold">0:{String(seconds).padStart(2, '0')}</span>
+            <WaveAnimation small neon />
           </div>
         )}
         {recState === 'processing' && (
-          <div className="flex items-center gap-2 text-gray-500 text-sm">
+          <div className="flex items-center gap-3 text-[#64748B] text-sm font-medium">
             <Spinner small /> Procesando...
           </div>
         )}
@@ -228,54 +294,67 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
     );
   }
 
-  // ── State A — required fields missing ──
   return (
-    <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex flex-col items-center gap-4">
-      <div className="w-full">
-        <p className="text-sm font-semibold text-amber-900 mb-3">Para enviar el reporte, contanos:</p>
-        <ul className="space-y-2">
-          {camposFaltantes.map(c => (
-            <li key={c.key} className="flex items-start gap-2 text-sm text-amber-800">
-              <span className="mt-0.5 text-amber-500 flex-shrink-0">•</span>
-              {c.pregunta}
-            </li>
-          ))}
-        </ul>
+    <div className="card-elevated rounded-2xl overflow-hidden">
+      {/* Header amber with left border */}
+      <div className="bg-amber-50 border-l-4 border-amber-500 px-5 py-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-amber-500 flex items-center justify-center flex-shrink-0">
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-base font-bold text-[#0F2B5B]">Datos requeridos faltantes</p>
+            <p className="text-sm text-[#64748B]">Completá estos campos para enviar</p>
+          </div>
+        </div>
       </div>
 
-      {recState === 'idle' && (
-        <button
-          onClick={start}
-          className="w-16 h-16 rounded-full bg-[#7c3aed] text-white flex items-center justify-center shadow-lg hover:bg-purple-700 active:scale-95 transition-all"
-        >
-          <MicIcon className="w-8 h-8" />
-        </button>
-      )}
+      <div className="p-5 space-y-3">
+        {camposFaltantes.map(c => (
+          <div key={c.key} className="flex items-center gap-3 p-3 bg-[#F0F6FF] rounded-xl border border-[#E0EEFF]">
+            <span className="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-sm font-bold">?</span>
+            <span className="text-sm text-[#0F2B5B] font-medium">{c.pregunta}</span>
+          </div>
+        ))}
 
-      {recState === 'recording' && (
-        <div className="flex flex-col items-center gap-3">
-          <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-red-500 pulse-ring" />
+        <div className="pt-4 flex flex-col items-center gap-4">
+          {recState === 'idle' && (
             <button
-              onClick={stop}
-              className="relative w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
+              onClick={start}
+              className="w-[88px] h-[88px] rounded-full bg-[#0EA5E9] flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all glow-neon"
             >
-              <StopIcon className="w-7 h-7" />
+              <MicIcon className="w-11 h-11 text-white" />
             </button>
-          </div>
-          <div className="flex flex-col items-center gap-1">
-            <WaveAnimation />
-            <span className="text-red-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
-          </div>
-        </div>
-      )}
+          )}
 
-      {recState === 'processing' && (
-        <div className="flex flex-col items-center gap-2 text-gray-600 text-sm">
-          <Spinner />
-          <span>Procesando respuesta...</span>
+          {recState === 'recording' && (
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-full bg-[#0EA5E9] pulse-neon" />
+                <button
+                  onClick={stop}
+                  className="relative w-[88px] h-[88px] rounded-full bg-[#0EA5E9] text-white flex items-center justify-center shadow-2xl active:scale-95 transition-all z-10 glow-neon-intense"
+                >
+                  <StopIcon className="w-10 h-10" />
+                </button>
+              </div>
+              <WaveAnimation neon />
+              <span className="text-[#0F2B5B] font-mono text-xl font-bold">0:{String(seconds).padStart(2, '0')}</span>
+            </div>
+          )}
+
+          {recState === 'processing' && (
+            <div className="flex flex-col items-center gap-3 text-[#0F2B5B]">
+              <Spinner />
+              <span className="font-medium">Procesando respuesta...</span>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -292,7 +371,6 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
     if (editingField && inputRef.current) inputRef.current.focus();
   }, [editingField]);
 
-  // Derived — recalculated on every render when formData changes
   const camposFaltantes = getCamposFaltantes(formData);
   const canSubmit = puedeEnviar(formData);
   const faltanCount = camposFaltantes.length;
@@ -335,14 +413,15 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
   };
 
   return (
-    <div className="w-full max-w-md flex flex-col gap-4 pb-4">
+    <div className="w-full max-w-md flex flex-col gap-5 pb-4">
+      {/* Header */}
       <div className="text-center">
-        <h2 className="text-base font-semibold text-gray-800">Revisá y editá el reporte</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Tocá el lápiz para corregir cualquier campo</p>
+        <h2 className="text-2xl font-bold text-[#0F2B5B]">Revisá tu reporte</h2>
+        <p className="text-sm text-[#64748B] mt-1">Tocá el lápiz para corregir cualquier campo</p>
       </div>
 
       {/* Editable fields */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-100 overflow-hidden">
+      <div className="card-elevated rounded-2xl overflow-hidden divide-y divide-[#E0EEFF]">
         {Object.entries(FIELD_LABELS).map(([key, label]) => {
           const raw = formData[key];
           const display = displayVal(key, raw);
@@ -354,19 +433,19 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
           return (
             <div
               key={key}
-              className={`px-4 py-3 transition-colors ${showAmber ? 'bg-amber-50 border-l-2 border-amber-400' : ''}`}
+              className={`px-5 py-4 transition-colors ${showAmber ? 'bg-amber-50 border-l-4 border-amber-500' : ''}`}
             >
-              <div className="flex items-center gap-2 mb-1">
-                <p className={`text-xs uppercase tracking-wider font-medium ${showAmber ? 'text-amber-600' : 'text-gray-400'}`}>
+              <div className="flex items-center justify-between mb-2">
+                <p className={`text-sm font-bold uppercase tracking-wide ${showAmber ? 'text-amber-700' : 'text-[#0F2B5B]'}`}>
                   {label}
                 </p>
                 {showAmber && (
-                  <span className="text-[10px] font-semibold text-amber-500 bg-amber-100 px-1.5 py-0.5 rounded">
-                    Requerido
+                  <span className="text-[10px] font-bold text-white bg-amber-500 px-2 py-0.5 rounded-full">
+                    REQUERIDO
                   </span>
                 )}
               </div>
-              <div className="flex items-start justify-between gap-2">
+              <div className="flex items-start justify-between gap-3">
                 {isEditing ? (
                   <input
                     ref={inputRef}
@@ -375,16 +454,22 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
                     onChange={(e) => setEditValue(e.target.value)}
                     onBlur={saveEdit}
                     onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-                    className="flex-1 text-sm text-gray-800 border-b border-[#7c3aed] outline-none pb-0.5 bg-transparent"
+                    className="flex-1 text-sm text-[#0F2B5B] border-b-2 border-[#0EA5E9] outline-none pb-1 bg-transparent font-medium"
                   />
                 ) : (
-                  <p className={`flex-1 text-sm ${display ? 'text-gray-800' : showAmber ? 'text-amber-400 italic' : 'text-gray-400 italic'}`}>
+                  <p className={`flex-1 text-sm ${display ? 'text-[#0F2B5B] font-medium' : showAmber ? 'text-amber-600 italic' : 'text-[#64748B] italic'}`}>
                     {display ?? 'Sin información'}
                   </p>
                 )}
                 <button
                   onClick={() => isEditing ? saveEdit() : startEdit(key)}
-                  className={`flex-shrink-0 p-1.5 rounded-full transition ${isEditing ? 'text-green-600 bg-green-50' : showAmber ? 'text-amber-400 hover:text-amber-600 hover:bg-amber-100' : 'text-gray-400 hover:text-[#7c3aed] hover:bg-purple-50'}`}
+                  className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition ${
+                    isEditing 
+                      ? 'text-white bg-green-500 hover:bg-green-600' 
+                      : showAmber 
+                        ? 'text-amber-600 bg-amber-100 hover:bg-amber-200' 
+                        : 'text-[#64748B] bg-[#F0F6FF] hover:bg-[#E0EEFF]'
+                  }`}
                 >
                   {isEditing ? <CheckIcon /> : <PencilIcon />}
                 </button>
@@ -394,7 +479,7 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
         })}
       </div>
 
-      {/* Mic block — required fields + optional correction */}
+      {/* Mic block */}
       <MicBlock
         camposFaltantes={camposFaltantes}
         currentReport={formData}
@@ -402,29 +487,28 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
       />
 
       {/* Submit button */}
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-3">
         <button
           onClick={handleSubmit}
           disabled={!canSubmit || submitting}
-          className={`w-full py-3.5 rounded-full font-semibold text-base transition-all shadow-md
+          className={`w-full py-4 rounded-full font-bold text-lg transition-all
             ${canSubmit && !submitting
-              ? 'bg-[#7c3aed] text-white hover:bg-purple-700 active:scale-[0.98]'
-              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              ? 'bg-[#0EA5E9] text-white hover:bg-[#38BDF8] shadow-neon active:scale-[0.98]'
+              : 'bg-[#E0EEFF] text-[#64748B] cursor-not-allowed'
             }`}
         >
           {submitting ? (
-            <span className="flex items-center justify-center gap-2">
-              <Spinner small /> Enviando...
+            <span className="flex items-center justify-center gap-3">
+              <Spinner small light /> Enviando...
             </span>
           ) : 'Enviar reporte'}
         </button>
 
-        {/* Counter hint — only shown when fields are missing */}
-        <p
-          className={`text-xs text-amber-600 text-center transition-opacity duration-300 ${faltanCount > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        >
-          Falta completar {faltanCount} campo{faltanCount !== 1 ? 's' : ''} requerido{faltanCount !== 1 ? 's' : ''}
-        </p>
+        {faltanCount > 0 && (
+          <p className="text-sm text-amber-600 text-center font-semibold">
+            Falta completar {faltanCount} campo{faltanCount !== 1 ? 's' : ''} requerido{faltanCount !== 1 ? 's' : ''}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -449,98 +533,117 @@ function ConfirmacionScreen({ reporte, onReset }) {
     : null;
 
   return (
-    <div className="w-full max-w-md flex flex-col gap-5 pb-4">
-      {/* Hero */}
-      <div className="flex flex-col items-center text-center gap-3 pt-2">
-        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-          <svg className="w-9 h-9 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <div className="w-full max-w-md flex flex-col gap-6 pb-4">
+      {/* Hero - Celebratory */}
+      <div className="flex flex-col items-center text-center gap-5 pt-6 celebrate">
+        <div className="w-24 h-24 rounded-full bg-green-500 flex items-center justify-center shadow-xl">
+          <svg className="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Reporte enviado</h2>
-          <p className="text-sm text-gray-500 mt-1 max-w-xs">El responsable fue notificado y ya está gestionando tu reporte.</p>
+          <h2 className="text-3xl font-black text-[#0F2B5B]">Reporte enviado</h2>
+          <p className="text-[#64748B] mt-2 text-base max-w-xs">El responsable fue notificado y ya está gestionando tu incidente.</p>
         </div>
       </div>
 
-      {/* Report card */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-
-        {/* ID row */}
-        <div className="bg-gray-50 border-b border-gray-100 px-4 py-3 flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-0.5">ID del reporte</p>
-            <p className="font-mono font-bold text-gray-900 text-base">{reporte.id}</p>
+      {/* Report ID - Super prominent */}
+      <div className="card-elevated rounded-2xl overflow-hidden">
+        <div className="bg-[#0F2B5B] px-5 py-5">
+          <p className="text-[#7DD3FC] text-xs uppercase tracking-widest font-semibold mb-2">ID del reporte</p>
+          <div className="flex items-center justify-between gap-3">
+            <p className="font-mono font-black text-[#0EA5E9] text-3xl tracking-wider">{reporte.id}</p>
+            <button
+              onClick={copyId}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all ${
+                copied 
+                  ? 'bg-green-500 text-white' 
+                  : 'bg-white/10 text-white hover:bg-white/20'
+              }`}
+            >
+              {copied ? 'Copiado' : 'Copiar'}
+            </button>
           </div>
-          <button
-            onClick={copyId}
-            className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${copied ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
-          >
-            {copied ? '✓ Copiado' : 'Copiar'}
-          </button>
         </div>
 
-        <div className="divide-y divide-gray-100">
-          {/* Fecha generación */}
+        <div className="divide-y divide-[#E0EEFF]">
           {fechaFormateada && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Fecha y hora del reporte</p>
-              <p className="text-sm text-gray-800">{fechaFormateada}</p>
+            <div className="px-5 py-4 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-[#0EA5E9] flex items-center justify-center">
+                <FieldIcon type="calendar" className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-xs text-[#64748B] uppercase tracking-wider font-bold">Fecha y hora</p>
+                <p className="text-base text-[#0F2B5B] font-semibold">{fechaFormateada}</p>
+              </div>
             </div>
           )}
 
-          {/* Tipo + Urgencia */}
-          <div className="px-4 py-3">
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Tipo / Urgencia</p>
-            <div className="flex flex-wrap gap-2">
+          <div className="px-5 py-4">
+            <p className="text-xs text-[#64748B] uppercase tracking-wider font-bold mb-3">Tipo / Urgencia</p>
+            <div className="flex flex-wrap items-center gap-2">
               {reporte.tipo && (
-                <span className="bg-[#7c3aed] text-white text-xs font-semibold px-3 py-1 rounded-full">{reporte.tipo}</span>
+                <span className="bg-[#0F2B5B] text-white text-sm font-bold px-4 py-2 rounded-full">{reporte.tipo}</span>
               )}
-              <UrgencyBadge urgencia={reporte.urgencia} />
+              {reporte.urgencia && <UrgencyBadge urgencia={reporte.urgencia} />}
             </div>
           </div>
 
-          {/* Área */}
           {reporte.area && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Área / Sector de trabajo</p>
-              <p className="text-sm text-gray-800">{reporte.area}</p>
+            <div className="px-5 py-4 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-[#0EA5E9] flex items-center justify-center">
+                <FieldIcon type="building" className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-xs text-[#64748B] uppercase tracking-wider font-bold">Área</p>
+                <p className="text-base text-[#0F2B5B] font-semibold">{reporte.area}</p>
+              </div>
             </div>
           )}
 
-          {/* Ubicación */}
           {reporte.ubicacion && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Ubicación exacta del incidente</p>
-              <p className="text-sm text-gray-800">{reporte.ubicacion}</p>
+            <div className="px-5 py-4 flex items-center gap-4">
+              <div className="w-10 h-10 rounded-xl bg-[#0EA5E9] flex items-center justify-center">
+                <FieldIcon type="location" className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-xs text-[#64748B] uppercase tracking-wider font-bold">Ubicación</p>
+                <p className="text-base text-[#0F2B5B] font-semibold">{reporte.ubicacion}</p>
+              </div>
             </div>
           )}
 
-          {/* Descripción breve */}
           {reporte.descripcion_corta && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Descripción breve</p>
-              <p className="text-sm text-gray-800">{reporte.descripcion_corta}</p>
+            <div className="px-5 py-4 flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-[#0EA5E9] flex items-center justify-center flex-shrink-0">
+                <FieldIcon type="text" className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <p className="text-xs text-[#64748B] uppercase tracking-wider font-bold">Descripción</p>
+                <p className="text-base text-[#0F2B5B] font-semibold">{reporte.descripcion_corta}</p>
+              </div>
             </div>
           )}
 
-          {/* Estado */}
-          <div className="px-4 py-3 flex items-center justify-between">
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">Estado</p>
-            <span className="bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
+          <div className="px-5 py-4 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="text-sm font-bold text-[#0F2B5B]">Estado</span>
+            </div>
+            <span className="bg-green-500 text-white text-sm font-bold px-4 py-2 rounded-full">
               {reporte.estado ?? 'Enviado'}
             </span>
           </div>
         </div>
       </div>
 
-      <p className="text-xs text-gray-400 text-center">
-        Podés guardar el ID para hacer seguimiento de tu reporte.
+      <p className="text-sm text-[#64748B] text-center font-medium">
+        Guardá el ID para hacer seguimiento de tu reporte.
       </p>
 
       <button
         onClick={onReset}
-        className="w-full py-3.5 bg-[#7c3aed] text-white rounded-full font-semibold text-base hover:bg-purple-700 active:scale-[0.98] transition-all shadow-md"
+        className="w-full py-4 bg-[#0EA5E9] text-white rounded-full font-bold text-lg hover:bg-[#38BDF8] shadow-neon active:scale-[0.98] transition-all"
       >
         Nuevo reporte
       </button>
@@ -559,52 +662,45 @@ function WelcomeScreen({ onConfirm }) {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
-      <div className="w-full max-w-sm flex flex-col items-center gap-8">
+    <div className="min-h-screen bg-navy-gradient flex flex-col items-center justify-center px-6">
+      <div className="w-full max-w-sm flex flex-col items-center gap-10">
         {/* Logo */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-16 h-16 rounded-2xl bg-[#7c3aed] flex items-center justify-center shadow-lg">
-            <svg className="w-9 h-9 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="9" y="1" width="6" height="12" rx="3" />
-              <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-              <line x1="12" y1="19" x2="12" y2="23" />
-              <line x1="8" y1="23" x2="16" y2="23" />
-            </svg>
+        <HuNowLogo size="lg" />
+
+        {/* Card */}
+        <div className="w-full bg-white rounded-3xl p-6 shadow-2xl flex flex-col gap-5">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-[#0F2B5B]">Bienvenido</h1>
+            <p className="text-[#64748B] text-sm mt-1">Ingresá tu legajo para continuar</p>
           </div>
-          <p className="text-sm font-semibold text-[#7c3aed] tracking-wide">HU NOW · HUMAND</p>
-        </div>
 
-        {/* Heading */}
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Bienvenido</h1>
-          <p className="text-gray-500 text-sm mt-2">Ingresá tu legajo para continuar</p>
-        </div>
-
-        {/* Input */}
-        <div className="w-full flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Ingresá tu legajo</label>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-bold text-[#0F2B5B]">Tu legajo</label>
             <input
               type="text"
               value={legajo}
               onChange={e => { setLegajo(e.target.value); setError(false); }}
               onKeyDown={e => e.key === 'Enter' && handleConfirm()}
-              placeholder="Juan123"
-              className={`w-full border rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-transparent transition ${error ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
+              placeholder="Ej: Juan123"
+              className={`w-full border-2 rounded-xl px-4 py-4 text-base focus:outline-none transition ${
+                error 
+                  ? 'border-red-400 bg-red-50 focus:border-red-500' 
+                  : 'border-[#E0EEFF] bg-white focus:border-[#0EA5E9]'
+              }`}
             />
-            {error && <p className="text-xs text-red-500">Ingresá tu legajo para continuar.</p>}
-            {!error && <p className="text-xs text-gray-400">Tu legajo se compone de tu primer nombre y número. Ejemplo: Juan123</p>}
+            {error && <p className="text-xs text-red-500 font-semibold">Ingresá tu legajo para continuar.</p>}
+            {!error && <p className="text-xs text-[#64748B]">Tu legajo se compone de tu primer nombre y número.</p>}
           </div>
 
           <button
             onClick={handleConfirm}
-            className="w-full py-3.5 bg-[#7c3aed] text-white rounded-full font-semibold text-base hover:bg-purple-700 active:scale-[0.98] transition-all shadow-md"
+            className="w-full py-4 bg-[#0EA5E9] text-white rounded-full font-bold text-lg hover:bg-[#38BDF8] shadow-neon active:scale-[0.98] transition-all"
           >
             Continuar
           </button>
         </div>
 
-        <p className="text-xs text-gray-400 text-center">
+        <p className="text-xs text-[#7DD3FC] text-center">
           Tu legajo identifica tus reportes y no se comparte públicamente.
         </p>
       </div>
@@ -612,7 +708,7 @@ function WelcomeScreen({ onConfirm }) {
   );
 }
 
-// ── Main App ───────────────────────────────────────────────────────────────
+// ── Main App ──────────────────────────────────────────────��───����────────────
 export default function App() {
   const [legajo, setLegajo] = useState(() => localStorage.getItem(STORAGE_KEY));
 
@@ -630,36 +726,36 @@ export default function App() {
   return <HuNowApp legajo={legajo} onChangeUser={handleChangeUser} />;
 }
 
-// ── Tab bar icons ──────────────────────────────────────────────────────────
+// ── Tab bar ────────────────────────────────────────────────────────────────
 function TabBar({ active, onChange }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex z-20 safe-area-inset-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#E0EEFF] flex z-20 safe-area-inset-bottom">
       <button
         onClick={() => onChange('reportar')}
-        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors
-          ${active === 'reportar' ? 'text-[#7c3aed]' : 'text-gray-400 hover:text-gray-600'}`}
+        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors
+          ${active === 'reportar' ? 'text-[#0EA5E9]' : 'text-[#64748B]'}`}
       >
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="9" y="1" width="6" height="12" rx="3" />
           <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
           <line x1="12" y1="19" x2="12" y2="23" />
           <line x1="8" y1="23" x2="16" y2="23" />
         </svg>
-        Reportar
+        <span className="text-xs font-bold">Reportar</span>
       </button>
       <button
         onClick={() => onChange('mis-reportes')}
-        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors
-          ${active === 'mis-reportes' ? 'text-[#7c3aed]' : 'text-gray-400 hover:text-gray-600'}`}
+        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors
+          ${active === 'mis-reportes' ? 'text-[#0EA5E9]' : 'text-[#64748B]'}`}
       >
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
           <polyline points="14 2 14 8 20 8" />
           <line x1="16" y1="13" x2="8" y2="13" />
           <line x1="16" y1="17" x2="8" y2="17" />
           <polyline points="10 9 9 9 8 9" />
         </svg>
-        Mis reportes
+        <span className="text-xs font-bold">Mis reportes</span>
       </button>
     </nav>
   );
@@ -724,7 +820,6 @@ function HuNowApp({ legajo, onChangeUser }) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Error del servidor');
 
-      // Legajo comes from localStorage, not from audio/Claude
       setReport({ ...data, legajo });
       setState(STATES.REVIEWING);
     } catch (err) {
@@ -758,77 +853,77 @@ function HuNowApp({ legajo, onChangeUser }) {
     };
   }, []);
 
-  const isScrollable = state === STATES.REVIEWING || state === STATES.DONE;
+  const isRecordingFlow = state === STATES.IDLE || state === STATES.RECORDING || state === STATES.PROCESSING;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-app flex flex-col">
       {/* Header */}
-      <header className="bg-[#7c3aed] text-white px-4 py-4 flex items-center justify-between shadow-md sticky top-0 z-10">
-        <div className="flex items-center gap-3">
-          <MicIcon className="w-7 h-7" />
-          <h1 className="text-lg font-bold tracking-tight">Hu Now · Humand</h1>
-        </div>
+      <header className="bg-white border-b border-[#E0EEFF] px-4 py-3 flex items-center justify-between sticky top-0 z-10">
+        <HuNowLogo size="sm" />
         <button
           onClick={onChangeUser}
           title="Cambiar usuario"
-          className="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-500 rounded-full px-3 py-1.5 transition"
+          className="flex items-center gap-2 bg-[#F0F6FF] hover:bg-[#E0EEFF] rounded-full px-4 py-2 transition"
         >
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg className="w-4 h-4 text-[#0F2B5B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
             <circle cx="12" cy="7" r="4" />
-            <path d="M22 11l-3-3-3 3" />
           </svg>
-          <span className="text-xs font-semibold">{legajo}</span>
+          <span className="text-sm font-bold text-[#0F2B5B]">{legajo}</span>
         </button>
       </header>
 
       {/* Tab: Mis reportes */}
       {activeTab === 'mis-reportes' && (
-        <div className="flex-1 flex flex-col pb-16 overflow-hidden">
+        <div className="flex-1 flex flex-col pb-20 overflow-hidden">
           <MisReportes legajo={legajo} />
         </div>
       )}
 
       {/* Tab: Reportar */}
       {activeTab === 'reportar' && (
-      <main className={`flex-1 flex flex-col items-center px-4 py-6 pb-20 ${isScrollable ? '' : 'justify-center'}`}>
+      <main className={`flex-1 flex flex-col items-center px-4 py-6 pb-24 ${isRecordingFlow ? 'justify-center' : ''} overflow-y-auto`}>
 
         {/* IDLE */}
         {state === STATES.IDLE && (
-          <div className="flex flex-col items-center gap-6 text-center">
+          <div className="flex flex-col items-center gap-8 text-center max-w-sm">
             <div>
-              <p className="text-gray-800 text-lg font-semibold">Tocá el botón y contanos qué pasó.</p>
-              <p className="text-gray-500 text-sm mt-1">Mencioná tu nombre, área, fecha y hora, lugar exacto y si alguien necesita atención médica.</p>
+              <h2 className="text-[#0F2B5B] text-2xl font-bold mb-3">Reportar un incidente</h2>
+              <p className="text-[#64748B] text-base leading-relaxed">Tocá el botón y contanos qué pasó. Mencioná tu nombre, área, fecha, lugar y si alguien necesita atención médica.</p>
             </div>
             <button
               onClick={startRecording}
-              className="relative w-20 h-20 rounded-full bg-[#7c3aed] text-white flex items-center justify-center shadow-lg hover:bg-purple-700 active:scale-95 transition-all"
+              className="w-[88px] h-[88px] rounded-full bg-[#0EA5E9] flex items-center justify-center hover:scale-105 active:scale-95 transition-all glow-neon"
             >
-              <MicIcon className="w-9 h-9" />
+              <MicIcon className="w-11 h-11 text-white" />
             </button>
+            <p className="text-[#64748B] text-sm font-medium">Máximo 30 segundos de grabación</p>
           </div>
         )}
 
         {/* RECORDING */}
         {state === STATES.RECORDING && (
-          <div className="flex flex-col items-center gap-6 text-center">
+          <div className="flex flex-col items-center gap-8 text-center">
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-red-500 pulse-ring" />
+              <div className="absolute inset-0 rounded-full bg-[#0EA5E9] pulse-neon" />
               <button
                 onClick={stopRecording}
-                className="relative w-20 h-20 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
+                className="relative w-[88px] h-[88px] rounded-full bg-[#0EA5E9] text-white flex items-center justify-center active:scale-95 transition-all z-10 glow-neon-intense"
               >
-                <StopIcon className="w-8 h-8" />
+                <StopIcon className="w-10 h-10" />
               </button>
             </div>
-            <WaveAnimation />
+            <WaveAnimation neon />
             <div>
-              <p className="text-red-600 text-3xl font-mono font-bold tabular-nums">
+              <p className="text-[#0EA5E9] text-4xl font-mono font-black tabular-nums">
                 0:{String(seconds).padStart(2, '0')}
               </p>
-              <p className="text-gray-500 text-sm mt-1">Grabando... (máx {MAX_SECONDS}s)</p>
+              <p className="text-[#64748B] text-sm mt-2">Grabando... (máx {MAX_SECONDS}s)</p>
             </div>
-            <button onClick={stopRecording} className="mt-2 px-6 py-2 border border-red-500 text-red-500 rounded-full font-medium hover:bg-red-50 transition">
+            <button 
+              onClick={stopRecording} 
+              className="px-6 py-2 border-2 border-[#0EA5E9] text-[#0EA5E9] rounded-full font-bold hover:bg-[#F0F6FF] transition"
+            >
               Detener
             </button>
           </div>
@@ -839,8 +934,8 @@ function HuNowApp({ legajo, onChangeUser }) {
           <div className="flex flex-col items-center gap-6 text-center">
             <Spinner />
             <div>
-              <p className="text-gray-800 text-lg font-semibold">Procesando con AI...</p>
-              <p className="text-gray-500 text-sm mt-2">Transcribiendo · Clasificando · Generando reporte</p>
+              <p className="text-[#0F2B5B] text-xl font-bold">Procesando audio...</p>
+              <p className="text-[#64748B] text-sm mt-1">Estamos analizando tu mensaje</p>
             </div>
           </div>
         )}
@@ -862,23 +957,32 @@ function HuNowApp({ legajo, onChangeUser }) {
         {/* ERROR */}
         {state === STATES.ERROR && (
           <div className="flex flex-col items-center gap-6 text-center max-w-sm">
-            <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
-              <span className="text-3xl">⚠</span>
+            <div className="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center">
+              <svg className="w-10 h-10 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+              </svg>
             </div>
-            <p className="text-gray-800 text-lg font-semibold">
+            <p className="text-[#0F2B5B] text-lg font-bold">
               {errorMsg || 'No pudimos procesar el audio. ¿Intentamos de nuevo?'}
             </p>
-            <button onClick={reset} className="px-8 py-3 bg-[#7c3aed] text-white rounded-full font-semibold hover:bg-purple-700 active:scale-[0.98] transition-all">
+            <button 
+              onClick={reset} 
+              className="px-8 py-3 bg-[#0EA5E9] text-white rounded-full font-bold hover:bg-[#38BDF8] shadow-neon active:scale-[0.98] transition-all"
+            >
               Reintentar
             </button>
           </div>
         )}
-        {/* Footer */}
-        <footer className="text-center text-xs text-gray-400 py-4 border-t border-gray-100">
-          Powered by Humand · Gemini
-        </footer>
+
       </main>
       )}
+
+      {/* Footer */}
+      <footer className="text-center text-xs text-[#64748B] py-4 mt-auto">
+        Powered by <span className="font-bold text-[#0F2B5B]">Humand</span>
+      </footer>
 
       {/* Tab bar */}
       <TabBar active={activeTab} onChange={setActiveTab} />

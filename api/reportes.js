@@ -10,12 +10,19 @@ export default async function handler(req, res) {
 
   try {
     const reportes = await readReportes();
+    
+    // Ensure reportes is always an array
+    if (!Array.isArray(reportes)) {
+      console.error('[API/reportes GET] reportes no es un array:', typeof reportes);
+      return res.status(200).json([]);
+    }
+    
     const ordenados = reportes.sort(
       (a, b) => new Date(b.fecha_generacion_reporte) - new Date(a.fecha_generacion_reporte)
     );
     return res.status(200).json(ordenados);
   } catch (err) {
-    console.error('[Reportes GET] Error:', err.message);
+    console.error('[API/reportes GET] Error:', err.message);
     return res.status(500).json({ error: 'No se pudieron obtener los reportes' });
   }
 }

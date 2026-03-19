@@ -4,18 +4,34 @@ import { useState, useEffect, useMemo } from 'react';
 const ESTADOS_VALIDOS = ['Enviado', 'En revisión', 'En proceso', 'Resuelto', 'Cerrado'];
 
 const URGENCIA_COLORS = {
-  Alta:  { badge: 'bg-red-100 text-red-700',    dot: 'bg-red-500' },
-  Media: { badge: 'bg-amber-100 text-amber-700', dot: 'bg-amber-400' },
-  Baja:  { badge: 'bg-green-100 text-green-700', dot: 'bg-green-500' },
+  Alta:  { badge: 'bg-red-500 text-white',    dot: 'bg-red-500' },
+  Media: { badge: 'bg-amber-500 text-white', dot: 'bg-amber-500' },
+  Baja:  { badge: 'bg-green-500 text-white', dot: 'bg-green-500' },
 };
 
 const ESTADO_COLORS = {
-  'Enviado':     'bg-blue-100 text-blue-700',
-  'En revisión': 'bg-purple-100 text-purple-700',
-  'En proceso':  'bg-amber-100 text-amber-700',
-  'Resuelto':    'bg-green-100 text-green-700',
-  'Cerrado':     'bg-gray-100 text-gray-500',
+  'Enviado':     'bg-[#0F2B5B] text-white',
+  'En revisión': 'bg-[#1E3A8A] text-white',
+  'En proceso':  'bg-amber-500 text-white',
+  'Resuelto':    'bg-green-500 text-white',
+  'Cerrado':     'bg-[#64748B] text-white',
 };
+
+// ── Logo Component - Official logo image ───────────────────────────────────
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png?v=2';
+
+function HuNowLogo() {
+  return (
+    <div className="flex items-center gap-3">
+      <img 
+        src={LOGO_URL} 
+        alt="HU NOW" 
+        className="max-w-[100px] h-auto"
+      />
+      <span className="text-xs font-medium text-[#64748B] border-l border-[#E0EEFF] pl-3">Panel de gestión</span>
+    </div>
+  );
+}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function fmtDate(iso) {
@@ -35,13 +51,13 @@ function arrayToText(val) {
 // ── Badge components ───────────────────────────────────────────────────────
 function UrgencyBadge({ urgencia }) {
   const c = URGENCIA_COLORS[urgencia];
-  if (!c) return <span className="bg-gray-100 text-gray-500 text-xs font-semibold px-2.5 py-1 rounded-full">{urgencia ?? '—'}</span>;
-  return <span className={`${c.badge} text-xs font-semibold px-2.5 py-1 rounded-full`}>{urgencia}</span>;
+  if (!c) return <span className="bg-[#64748B] text-white text-xs font-bold px-3 py-1.5 rounded-full">{urgencia ?? '—'}</span>;
+  return <span className={`${c.badge} text-xs font-bold px-3 py-1.5 rounded-full`}>{urgencia}</span>;
 }
 
 function EstadoBadge({ estado }) {
-  const cls = ESTADO_COLORS[estado] ?? 'bg-gray-100 text-gray-500';
-  return <span className={`${cls} text-xs font-semibold px-2.5 py-1 rounded-full`}>{estado ?? '—'}</span>;
+  const cls = ESTADO_COLORS[estado] ?? 'bg-[#64748B] text-white';
+  return <span className={`${cls} text-xs font-bold px-3 py-1.5 rounded-full`}>{estado ?? '—'}</span>;
 }
 
 // ── Field row for detail panel ─────────────────────────────────────────────
@@ -50,9 +66,9 @@ function DetailField({ label, value }) {
   const text = arrayToText(value);
   if (!text) return null;
   return (
-    <div className="py-2.5 border-b border-gray-100 last:border-0">
-      <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-0.5">{label}</p>
-      <p className="text-sm text-gray-800 whitespace-pre-wrap">{text}</p>
+    <div className="py-3 border-b border-[#E0EEFF] last:border-0">
+      <p className="text-xs text-[#64748B] uppercase tracking-wider font-bold mb-1">{label}</p>
+      <p className="text-sm text-[#0F2B5B] whitespace-pre-wrap font-medium">{text}</p>
     </div>
   );
 }
@@ -71,54 +87,62 @@ function DetailPanel({ reporte, onClose, onEstadoChange }) {
   const fechaGeneracion = fmtDate(reporte.fecha_generacion_reporte);
 
   return (
-    <aside className="w-full lg:w-[420px] flex-shrink-0 bg-white border-l border-gray-200 flex flex-col h-full overflow-hidden">
+    <aside className="w-full lg:w-[480px] flex-shrink-0 bg-white border-l border-[#E0EEFF] flex flex-col h-full overflow-hidden shadow-xl">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[#E0EEFF] bg-[#F0F6FF]">
         <div>
-          <p className="font-mono text-sm font-bold text-gray-900">{reporte.id}</p>
-          <p className="text-xs text-gray-400 mt-0.5">{fmtDate(reporte.fecha_generacion_reporte)}</p>
+          <p className="font-mono text-lg font-black text-[#0F2B5B]">{reporte.id}</p>
+          <p className="text-xs text-[#64748B] mt-0.5">{fmtDate(reporte.fecha_generacion_reporte)}</p>
         </div>
         <button
           onClick={onClose}
-          className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition"
+          className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-[#E0EEFF] hover:bg-[#F0F6FF] text-[#64748B] hover:text-[#0F2B5B] transition"
         >
-          ✕
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </button>
       </div>
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-1">
+      <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
 
-        {/* Humand notification banner */}
-        <div className="bg-purple-50 border border-purple-200 rounded-lg px-3 py-2.5 mb-4 flex items-start gap-2">
-          <span className="text-purple-500 text-base leading-none mt-0.5">🔔</span>
-          <p className="text-xs text-purple-700">
-            <span className="font-semibold">Notificación enviada a Humand</span>
-            {fechaGeneracion && <> · {fechaGeneracion}</>}
-          </p>
+        {/* Notification banner */}
+        <div className="bg-[#0F2B5B] rounded-xl px-4 py-4 flex items-center gap-3 border-l-4 border-[#0EA5E9]">
+          <div className="w-10 h-10 rounded-xl bg-[#0EA5E9] flex items-center justify-center flex-shrink-0">
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-sm font-bold text-white">Notificación enviada a Humand</p>
+            {fechaGeneracion && <p className="text-xs text-[#7DD3FC]">{fechaGeneracion}</p>}
+          </div>
         </div>
 
         {/* Estado selector */}
-        <div className="bg-gray-50 rounded-lg px-4 py-3 mb-4">
-          <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wider">Estado del reporte</p>
+        <div className="bg-[#F0F6FF] rounded-xl px-4 py-4 border border-[#E0EEFF]">
+          <p className="text-xs text-[#64748B] font-bold mb-3 uppercase tracking-wider">Estado del reporte</p>
           <div className="flex items-center gap-3">
             <select
               value={reporte.estado ?? 'Enviado'}
               onChange={handleEstado}
               disabled={updating}
-              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-transparent disabled:opacity-60"
+              className="flex-1 text-sm border-2 border-[#E0EEFF] rounded-xl px-4 py-3 bg-white font-semibold text-[#0F2B5B] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9] disabled:opacity-60"
             >
               {ESTADOS_VALIDOS.map(e => (
                 <option key={e} value={e}>{e}</option>
               ))}
             </select>
-            {updating && <div className="w-4 h-4 border-2 border-gray-300 border-t-[#7c3aed] rounded-full animate-spin" />}
+            {updating && <div className="w-5 h-5 border-2 border-[#E0EEFF] border-t-[#0EA5E9] rounded-full animate-spin" />}
           </div>
         </div>
 
         {/* Badges */}
-        <div className="flex flex-wrap gap-2 pb-3 border-b border-gray-100 mb-1">
-          <span className="bg-[#7c3aed] text-white text-xs font-semibold px-3 py-1 rounded-full">{reporte.tipo}</span>
+        <div className="flex flex-wrap gap-2 pb-4 border-b border-[#E0EEFF]">
+          <span className="bg-[#0F2B5B] text-white text-sm font-bold px-4 py-2 rounded-full">{reporte.tipo}</span>
           <UrgencyBadge urgencia={reporte.urgencia} />
           <EstadoBadge estado={reporte.estado} />
         </div>
@@ -148,14 +172,14 @@ function DetailPanel({ reporte, onClose, onEstadoChange }) {
 // ── Filter bar ─────────────────────────────────────────────────────────────
 function FilterBar({ filtros, onChange, tiposDisponibles }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 px-6 py-3 border-b border-gray-200 bg-white">
-      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mr-1">Filtrar:</span>
+    <div className="flex flex-wrap items-center gap-3 px-6 py-4 border-b border-[#E0EEFF] bg-white">
+      <span className="text-xs font-bold text-[#64748B] uppercase tracking-wider mr-2">Filtrar:</span>
 
       {/* Estado */}
       <select
         value={filtros.estado}
         onChange={e => onChange('estado', e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
+        className="text-sm border-2 border-[#E0EEFF] rounded-lg px-3 py-2 bg-white font-semibold text-[#0F2B5B] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
       >
         <option value="Todos">Estado: Todos</option>
         {ESTADOS_VALIDOS.map(e => <option key={e} value={e}>{e}</option>)}
@@ -165,7 +189,7 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
       <select
         value={filtros.urgencia}
         onChange={e => onChange('urgencia', e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
+        className="text-sm border-2 border-[#E0EEFF] rounded-lg px-3 py-2 bg-white font-semibold text-[#0F2B5B] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
       >
         <option value="Todos">Urgencia: Todos</option>
         {['Alta', 'Media', 'Baja'].map(u => <option key={u} value={u}>{u}</option>)}
@@ -175,7 +199,7 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
       <select
         value={filtros.tipo}
         onChange={e => onChange('tipo', e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
+        className="text-sm border-2 border-[#E0EEFF] rounded-lg px-3 py-2 bg-white font-semibold text-[#0F2B5B] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9]"
       >
         <option value="Todos">Tipo: Todos</option>
         {tiposDisponibles.map(t => <option key={t} value={t}>{t}</option>)}
@@ -187,14 +211,14 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
         value={filtros.legajo}
         onChange={e => onChange('legajo', e.target.value)}
         placeholder="Filtrar por legajo"
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed] w-40"
+        className="text-sm border-2 border-[#E0EEFF] rounded-lg px-3 py-2 bg-white font-medium text-[#0F2B5B] focus:outline-none focus:ring-2 focus:ring-[#0EA5E9] focus:border-[#0EA5E9] w-40"
       />
 
       {/* Clear */}
       {(filtros.estado !== 'Todos' || filtros.urgencia !== 'Todos' || filtros.tipo !== 'Todos' || filtros.legajo.trim()) && (
         <button
           onClick={() => { onChange('estado', 'Todos'); onChange('urgencia', 'Todos'); onChange('tipo', 'Todos'); onChange('legajo', ''); }}
-          className="text-xs text-gray-400 hover:text-gray-600 underline transition"
+          className="text-sm text-[#0EA5E9] hover:text-[#0F2B5B] font-bold transition"
         >
           Limpiar filtros
         </button>
@@ -205,34 +229,40 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
 
 // ── Report row ─────────────────────────────────────────────────────────────
 function ReporteRow({ reporte, isSelected, onClick }) {
-  const dot = URGENCIA_COLORS[reporte.urgencia]?.dot ?? 'bg-gray-300';
+  const dot = URGENCIA_COLORS[reporte.urgencia]?.dot ?? 'bg-[#64748B]';
   return (
     <div
       onClick={onClick}
-      className={`flex items-start gap-4 px-6 py-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50 ${isSelected ? 'bg-purple-50 border-l-4 border-l-[#7c3aed]' : 'border-l-4 border-l-transparent'}`}
+      className={`flex items-start gap-4 px-6 py-5 border-b border-[#E0EEFF] cursor-pointer transition-all hover:bg-[#F0F6FF] ${
+        isSelected 
+          ? 'bg-[#E0EEFF] border-l-4 border-l-[#0EA5E9]' 
+          : 'border-l-4 border-l-transparent'
+      }`}
     >
       {/* Urgency dot */}
-      <div className={`w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0 ${dot}`} />
+      <div className={`w-3 h-3 rounded-full mt-2 flex-shrink-0 ${dot}`} />
 
       {/* Content */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap mb-1">
-          <span className="font-mono text-xs text-gray-500">{reporte.id}</span>
-          {reporte.legajo && <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full font-mono">Leg. {reporte.legajo}</span>}
+        <div className="flex items-center gap-2 flex-wrap mb-2">
+          <span className="font-mono text-xs font-bold text-[#0F2B5B] bg-[#F0F6FF] px-2 py-1 rounded border border-[#E0EEFF]">{reporte.id}</span>
+          {reporte.legajo && <span className="text-xs bg-[#E0EEFF] text-[#0F2B5B] px-2 py-1 rounded font-semibold">Leg. {reporte.legajo}</span>}
+        </div>
+        <div className="flex items-center gap-2 flex-wrap mb-2">
           <UrgencyBadge urgencia={reporte.urgencia} />
           <EstadoBadge estado={reporte.estado} />
         </div>
-        <p className="text-sm font-medium text-gray-900 truncate">{reporte.descripcion_corta ?? '—'}</p>
-        <div className="flex items-center gap-3 mt-1 text-xs text-gray-400">
-          {reporte.area && <span>{reporte.area}</span>}
-          {reporte.area && <span>·</span>}
+        <p className="text-base font-semibold text-[#0F2B5B] truncate mb-1">{reporte.descripcion_corta ?? '—'}</p>
+        <div className="flex items-center gap-3 text-sm text-[#64748B]">
+          {reporte.area && <span className="font-medium">{reporte.area}</span>}
+          {reporte.area && <span>|</span>}
           <span>{fmtDate(reporte.fecha_generacion_reporte)}</span>
         </div>
       </div>
 
       {/* Ver detalle */}
-      <button className="flex-shrink-0 text-xs font-medium text-[#7c3aed] hover:text-purple-800 transition mt-1">
-        Ver detalle →
+      <button className="flex-shrink-0 px-4 py-2 bg-[#0EA5E9] text-white text-sm font-bold rounded-full hover:bg-[#38BDF8] transition" style={{ boxShadow: '0 4px 14px rgba(14, 165, 233, 0.25)' }}>
+        Ver detalle
       </button>
     </div>
   );
@@ -241,12 +271,17 @@ function ReporteRow({ reporte, isSelected, onClick }) {
 // ── Empty state ────────────────────────────────────────────────────────────
 function EmptyState({ filtered }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-3 py-20 text-center px-6">
-      <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center text-2xl">📋</div>
-      <p className="text-gray-700 font-semibold">
+    <div className="flex flex-col items-center justify-center gap-4 py-20 text-center px-6">
+      <div className="w-20 h-20 rounded-2xl bg-[#F0F6FF] border border-[#E0EEFF] flex items-center justify-center">
+        <svg className="w-10 h-10 text-[#64748B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg>
+      </div>
+      <p className="text-[#0F2B5B] font-bold text-lg">
         {filtered ? 'Sin resultados para estos filtros' : 'Aún no hay reportes'}
       </p>
-      <p className="text-sm text-gray-400 max-w-xs">
+      <p className="text-sm text-[#64748B] max-w-xs">
         {filtered
           ? 'Probá cambiando los filtros para ver más reportes.'
           : 'Los reportes enviados desde la app aparecerán acá.'}
@@ -308,35 +343,25 @@ export default function Dashboard() {
   const isFiltering = filtros.estado !== 'Todos' || filtros.urgencia !== 'Todos' || filtros.tipo !== 'Todos' || filtros.legajo.trim() !== '';
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-[#F0F6FF] flex flex-col">
 
       {/* Header */}
-      <header className="bg-[#7c3aed] text-white px-6 py-4 flex items-center justify-between shadow-md sticky top-0 z-20">
-        <div className="flex items-center gap-3">
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="9" y="1" width="6" height="12" rx="3" />
-            <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-            <line x1="12" y1="19" x2="12" y2="23" />
-            <line x1="8" y1="23" x2="16" y2="23" />
-          </svg>
-          <div>
-            <h1 className="text-base font-bold leading-none">Hu Now · Panel de gestión</h1>
-            <p className="text-purple-200 text-xs mt-0.5">Humand Incident Management</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
+      <header className="bg-white border-b border-[#E0EEFF] px-6 py-4 flex items-center justify-between sticky top-0 z-20">
+        <HuNowLogo size="md" />
+        <div className="flex items-center gap-4">
           <div className="text-right">
             {loading
-              ? <p className="text-purple-200 text-sm">Cargando...</p>
-              : <p className="text-white font-semibold text-sm">{activos} reporte{activos !== 1 ? 's' : ''} activo{activos !== 1 ? 's' : ''}</p>
+              ? <p className="text-[#64748B] text-sm font-medium">Cargando...</p>
+              : <p className="text-[#0F2B5B] font-bold text-base">{activos} reporte{activos !== 1 ? 's' : ''} activo{activos !== 1 ? 's' : ''}</p>
             }
           </div>
           <button
             onClick={fetchReportes}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-purple-600 hover:bg-purple-500 transition"
+            className="w-10 h-10 flex items-center justify-center rounded-xl bg-[#0F2B5B] text-[#0EA5E9] hover:bg-[#1E3A8A] transition"
             title="Actualizar"
+            style={{ boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' }}
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="23 4 23 10 17 10" />
               <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
             </svg>
@@ -345,15 +370,15 @@ export default function Dashboard() {
       </header>
 
       {/* Body */}
-      <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 65px)' }}>
+      <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 73px)' }}>
 
         {/* Left panel — list */}
-        <div className={`flex flex-col flex-1 overflow-hidden bg-white border-r border-gray-200 ${selected ? 'hidden lg:flex' : 'flex'}`}>
+        <div className={`flex flex-col flex-1 overflow-hidden bg-white border-r border-[#E0EEFF] ${selected ? 'hidden lg:flex' : 'flex'}`}>
           <FilterBar filtros={filtros} onChange={handleFiltro} tiposDisponibles={tiposDisponibles} />
 
           {/* Counter */}
-          <div className="px-6 py-2 border-b border-gray-100 bg-gray-50">
-            <p className="text-xs text-gray-500">
+          <div className="px-6 py-3 border-b border-[#E0EEFF] bg-[#F0F6FF]">
+            <p className="text-sm text-[#64748B] font-semibold">
               {loading ? 'Cargando reportes...' : `${filtrados.length} reporte${filtrados.length !== 1 ? 's' : ''}${isFiltering ? ' con los filtros aplicados' : ''}`}
             </p>
           </div>
@@ -361,8 +386,8 @@ export default function Dashboard() {
           {/* List */}
           <div className="flex-1 overflow-y-auto">
             {loading ? (
-              <div className="flex items-center justify-center gap-3 py-20 text-gray-400 text-sm">
-                <div className="w-5 h-5 border-2 border-gray-200 border-t-[#7c3aed] rounded-full animate-spin" />
+              <div className="flex items-center justify-center gap-3 py-20 text-[#64748B] text-base">
+                <div className="w-6 h-6 border-3 border-[#E0EEFF] border-t-[#0EA5E9] rounded-full animate-spin" />
                 Cargando reportes...
               </div>
             ) : filtrados.length === 0 ? (
@@ -391,10 +416,14 @@ export default function Dashboard() {
 
         {/* No selection placeholder (desktop only) */}
         {!selected && (
-          <div className="hidden lg:flex w-[420px] flex-shrink-0 items-center justify-center bg-gray-50 border-l border-gray-200">
+          <div className="hidden lg:flex w-[480px] flex-shrink-0 items-center justify-center bg-[#F0F6FF] border-l border-[#E0EEFF]">
             <div className="text-center px-8">
-              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-xl mx-auto mb-3">👈</div>
-              <p className="text-sm text-gray-500">Seleccioná un reporte para ver el detalle</p>
+              <div className="w-16 h-16 rounded-2xl bg-white border border-[#E0EEFF] flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-[#64748B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </div>
+              <p className="text-[#64748B] text-sm font-medium">Seleccioná un reporte de la lista para ver su detalle</p>
             </div>
           </div>
         )}
