@@ -80,7 +80,7 @@ function displayVal(key, value) {
 }
 
 // ── Logo Component - Official logo image ───────────────────────────────────
-const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png';
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png?v=2';
 
 function HuNowLogo({ size = 'md' }) {
   const maxWidths = {
