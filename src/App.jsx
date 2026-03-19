@@ -80,6 +80,8 @@ function displayVal(key, value) {
 }
 
 // ── Logo Component - Official logo image ───────────────────────────────────
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow.png';
+
 function HuNowLogo({ size = 'md' }) {
   const maxWidths = {
     sm: 'max-w-[100px]',
@@ -89,7 +91,7 @@ function HuNowLogo({ size = 'md' }) {
   
   return (
     <img 
-      src="/logo-hunow.png" 
+      src={LOGO_URL} 
       alt="HU NOW" 
       className={`${maxWidths[size]} h-auto`}
     />

@@ -18,11 +18,13 @@ const ESTADO_COLORS = {
 };
 
 // ── Logo Component - Official logo image ───────────────────────────────────
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow.png';
+
 function HuNowLogo() {
   return (
     <div className="flex items-center gap-3">
       <img 
-        src="/logo-hunow.png" 
+        src={LOGO_URL} 
         alt="HU NOW" 
         className="max-w-[100px] h-auto"
       />
