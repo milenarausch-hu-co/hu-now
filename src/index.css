@@ -16,14 +16,14 @@
 .wave-bar:nth-child(4) { animation-delay: 0.3s; }
 .wave-bar:nth-child(5) { animation-delay: 0.15s; }
 
-/* Pulse animation for recording button */
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.7; }
-  100% { transform: scale(1.5); opacity: 0; }
+/* Pulse animation for recording button - neon blue */
+@keyframes pulse-neon {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.6); opacity: 0; }
 }
 
-.pulse-ring {
-  animation: pulse-ring 1.2s ease-out infinite;
+.pulse-neon {
+  animation: pulse-neon 1.5s ease-out infinite;
 }
 
 /* Spinner */
@@ -35,58 +35,56 @@
   animation: spin 1s linear infinite;
 }
 
-/* Subtle glow for primary buttons */
-@keyframes glow-subtle {
-  0%, 100% { 
-    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.25), 
-                0 2px 8px rgba(0, 0, 0, 0.1); 
-  }
-  50% { 
-    box-shadow: 0 4px 30px rgba(14, 165, 233, 0.4), 
-                0 2px 8px rgba(0, 0, 0, 0.1); 
-  }
+/* Neon glow effect for main button - like the logo */
+.glow-neon {
+  box-shadow: 
+    0 0 20px rgba(14, 165, 233, 0.4),
+    0 0 40px rgba(14, 165, 233, 0.2),
+    0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.glow-effect {
-  animation: glow-subtle 2s ease-in-out infinite;
+.glow-neon:hover {
+  box-shadow: 
+    0 0 30px rgba(14, 165, 233, 0.5),
+    0 0 60px rgba(14, 165, 233, 0.3),
+    0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* Light background with subtle texture */
-.bg-light {
-  background: linear-gradient(180deg, #FAFBFC 0%, #F1F5F9 100%);
+/* Recording state - more intense glow */
+.glow-neon-intense {
+  box-shadow: 
+    0 0 30px rgba(14, 165, 233, 0.6),
+    0 0 60px rgba(14, 165, 233, 0.4),
+    0 0 90px rgba(14, 165, 233, 0.2);
+}
+
+/* Light background with subtle blue tint - like logo gradient */
+.bg-app {
+  background: linear-gradient(180deg, #F0F6FF 0%, #E8F1FD 100%);
   min-height: 100vh;
 }
 
-/* Welcome screen background - subtle gradient */
-.bg-welcome {
-  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+/* Welcome screen - navy gradient */
+.bg-navy-gradient {
+  background: linear-gradient(180deg, #0F2B5B 0%, #0A1F42 100%);
   min-height: 100vh;
 }
 
-/* Card styles */
-.card {
+/* Card with subtle blue border */
+.card-blue {
   background: white;
-  border: 1px solid #E2E8F0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  border: 1px solid #E0EEFF;
+  box-shadow: 0 2px 8px rgba(15, 43, 91, 0.04);
 }
 
+/* Card elevated */
 .card-elevated {
   background: white;
-  border: 1px solid #E2E8F0;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+  border: 1px solid #E0EEFF;
+  box-shadow: 0 4px 20px rgba(15, 43, 91, 0.08);
 }
 
-/* Success animation */
-@keyframes success-bounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.success-bounce {
-  animation: success-bounce 0.6s ease-in-out;
-}
-
-/* Celebration effect */
+/* Success celebration */
 @keyframes celebrate {
   0% { transform: scale(0.8); opacity: 0; }
   50% { transform: scale(1.05); }
@@ -97,11 +95,11 @@
   animation: celebrate 0.5s ease-out forwards;
 }
 
-/* Icon container - dark style like Humand */
-.icon-container {
-  @apply w-10 h-10 rounded-xl flex items-center justify-center;
+/* Subtle blue shadow for buttons */
+.shadow-neon {
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.25);
 }
 
-.icon-container-lg {
-  @apply w-12 h-12 rounded-xl flex items-center justify-center;
+.shadow-neon:hover {
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.35);
 }

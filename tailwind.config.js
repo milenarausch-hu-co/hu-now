@@ -4,20 +4,27 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
+        // Primary neon blue from logo
+        neon: {
           DEFAULT: '#0EA5E9',
-          50: '#F0F9FF',
-          100: '#E0F2FE',
-          200: '#BAE6FD',
-          300: '#7DD3FC',
-          400: '#38BDF8',
-          500: '#0EA5E9',
-          600: '#0284C7',
-          700: '#0369A1',
-          800: '#075985',
-          900: '#0C4A6E',
+          light: '#38BDF8',
+          glow: '#7DD3FC',
         },
-        accent: '#06B6D4',
+        // Navy dark from logo
+        navy: {
+          DEFAULT: '#0F2B5B',
+          dark: '#0A1F42',
+          light: '#1E3A8A',
+        },
+        // Background colors
+        sky: {
+          soft: '#F0F6FF',
+          muted: '#E8F1FD',
+        },
+        // Text colors
+        slate: {
+          muted: '#64748B',
+        }
       },
     },
   },
