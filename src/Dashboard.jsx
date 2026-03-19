@@ -18,7 +18,7 @@ const ESTADO_COLORS = {
 };
 
 // ── Logo Component - Official logo image ───────────────────────────────────
-const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/logo-hunow3.png?v=2';
+const LOGO_URL = 'https://raw.githubusercontent.com/milenarausch-hu-co/hu-now/main/public/hunowlogo3usar.png';
 
 function HuNowLogo() {
   return (
