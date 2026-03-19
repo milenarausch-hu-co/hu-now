@@ -35,46 +35,45 @@
   animation: spin 1s linear infinite;
 }
 
-/* AI-inspired glow effect - more intense */
-@keyframes glow {
+/* Subtle glow for primary buttons */
+@keyframes glow-subtle {
   0%, 100% { 
-    box-shadow: 0 0 25px rgba(14, 165, 233, 0.5), 
-                0 0 50px rgba(6, 182, 212, 0.3),
-                0 4px 20px rgba(0, 0, 0, 0.15); 
+    box-shadow: 0 4px 20px rgba(14, 165, 233, 0.25), 
+                0 2px 8px rgba(0, 0, 0, 0.1); 
   }
   50% { 
-    box-shadow: 0 0 40px rgba(14, 165, 233, 0.7), 
-                0 0 70px rgba(6, 182, 212, 0.4),
-                0 4px 20px rgba(0, 0, 0, 0.15); 
+    box-shadow: 0 4px 30px rgba(14, 165, 233, 0.4), 
+                0 2px 8px rgba(0, 0, 0, 0.1); 
   }
 }
 
 .glow-effect {
-  animation: glow 2s ease-in-out infinite;
+  animation: glow-subtle 2s ease-in-out infinite;
 }
 
-/* Deep gradient background with more visual interest */
-.gradient-bg {
-  background: linear-gradient(180deg, #0C4A6E 0%, #075985 30%, #0369A1 70%, #0284C7 100%);
+/* Light background with subtle texture */
+.bg-light {
+  background: linear-gradient(180deg, #FAFBFC 0%, #F1F5F9 100%);
   min-height: 100vh;
 }
 
-/* Light gradient for cards/content areas */
-.gradient-bg-light {
-  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #ECFEFF 100%);
+/* Welcome screen background - subtle gradient */
+.bg-welcome {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+  min-height: 100vh;
 }
 
-/* Glass card with more depth */
-.glass-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-}
-
-/* Elevated card */
-.elevated-card {
+/* Card styles */
+.card {
   background: white;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.card-elevated {
+  background: white;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 /* Success animation */
@@ -87,13 +86,22 @@
   animation: success-bounce 0.6s ease-in-out;
 }
 
-/* Confetti-like celebration effect */
+/* Celebration effect */
 @keyframes celebrate {
   0% { transform: scale(0.8); opacity: 0; }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.05); }
   100% { transform: scale(1); opacity: 1; }
 }
 
 .celebrate {
   animation: celebrate 0.5s ease-out forwards;
+}
+
+/* Icon container - dark style like Humand */
+.icon-container {
+  @apply w-10 h-10 rounded-xl flex items-center justify-center;
+}
+
+.icon-container-lg {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center;
 }
