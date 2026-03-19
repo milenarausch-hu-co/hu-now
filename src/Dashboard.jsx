@@ -27,6 +27,7 @@ function HuNowLogo() {
         src={LOGO_URL} 
         alt="HU NOW" 
         className="max-w-[100px] h-auto"
+        style={{ mixBlendMode: 'multiply' }}
       />
       <span className="text-xs font-medium text-[#64748B] border-l border-[#E0EEFF] pl-3">Panel de gestión</span>
     </div>

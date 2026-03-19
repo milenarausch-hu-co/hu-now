@@ -94,6 +94,7 @@ function HuNowLogo({ size = 'md' }) {
       src={LOGO_URL} 
       alt="HU NOW" 
       className={`${maxWidths[size]} h-auto`}
+      style={{ mixBlendMode: 'multiply' }}
     />
   );
 }
@@ -708,7 +709,7 @@ function WelcomeScreen({ onConfirm }) {
   );
 }
 
-// ── Main App ──────────────────────────────────────────────��───����────────────
+// ── Main App ──────────────────────────────────────────────��───������────────────
 export default function App() {
   const [legajo, setLegajo] = useState(() => localStorage.getItem(STORAGE_KEY));
 
