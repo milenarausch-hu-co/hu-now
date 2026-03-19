@@ -102,8 +102,8 @@ function CheckIcon() {
 function WaveAnimation({ small }) {
   const bars = small ? 4 : 5;
   const cls = small
-    ? 'wave-bar w-1 h-4 bg-red-400 rounded-full origin-bottom'
-    : 'wave-bar w-1.5 h-8 bg-red-500 rounded-full origin-bottom';
+    ? 'wave-bar w-1 h-4 bg-primary-400 rounded-full origin-bottom'
+    : 'wave-bar w-1.5 h-8 bg-primary-500 rounded-full origin-bottom';
   return (
     <div className={`flex items-center justify-center gap-1 ${small ? 'h-6' : 'h-10'}`}>
       {[...Array(bars)].map((_, i) => <div key={i} className={cls} />)}
@@ -113,7 +113,7 @@ function WaveAnimation({ small }) {
 
 function Spinner({ small }) {
   return (
-    <div className={`spinner border-gray-200 border-t-[#7c3aed] rounded-full ${small ? 'w-5 h-5 border-2' : 'w-12 h-12 border-4'}`} />
+    <div className={`spinner border-primary-100 border-t-primary-500 rounded-full ${small ? 'w-5 h-5 border-2' : 'w-12 h-12 border-4'}`} />
   );
 }
 
@@ -205,17 +205,17 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
         {recState === 'idle' && (
           <button
             onClick={start}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full text-sm font-medium transition"
+            className="flex items-center gap-2 px-4 py-2 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full text-sm font-medium transition"
           >
             <MicIcon className="w-4 h-4" /> ¿Querés agregar algo más?
           </button>
         )}
         {recState === 'recording' && (
           <div className="flex items-center gap-3">
-            <button onClick={stop} className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-full text-sm font-medium">
+            <button onClick={stop} className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-full text-sm font-medium">
               <StopIcon className="w-3.5 h-3.5" /> Detener
             </button>
-            <span className="text-red-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
+            <span className="text-primary-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
             <WaveAnimation small />
           </div>
         )}
@@ -230,13 +230,13 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
 
   // ── State A — required fields missing ──
   return (
-    <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 flex flex-col items-center gap-4">
+    <div className="bg-primary-50 border border-primary-200 rounded-xl p-5 flex flex-col items-center gap-4">
       <div className="w-full">
-        <p className="text-sm font-semibold text-amber-900 mb-3">Para enviar el reporte, contanos:</p>
+        <p className="text-sm font-semibold text-primary-900 mb-3">Para enviar el reporte, contanos:</p>
         <ul className="space-y-2">
           {camposFaltantes.map(c => (
-            <li key={c.key} className="flex items-start gap-2 text-sm text-amber-800">
-              <span className="mt-0.5 text-amber-500 flex-shrink-0">•</span>
+            <li key={c.key} className="flex items-start gap-2 text-sm text-primary-700">
+              <span className="mt-0.5 text-primary-400 flex-shrink-0">•</span>
               {c.pregunta}
             </li>
           ))}
@@ -246,7 +246,7 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
       {recState === 'idle' && (
         <button
           onClick={start}
-          className="w-16 h-16 rounded-full bg-[#7c3aed] text-white flex items-center justify-center shadow-lg hover:bg-purple-700 active:scale-95 transition-all"
+          className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-white flex items-center justify-center shadow-lg hover:from-primary-500 hover:to-primary-700 active:scale-95 transition-all glow-effect"
         >
           <MicIcon className="w-8 h-8" />
         </button>
@@ -255,17 +255,17 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
       {recState === 'recording' && (
         <div className="flex flex-col items-center gap-3">
           <div className="relative">
-            <div className="absolute inset-0 rounded-full bg-red-500 pulse-ring" />
+            <div className="absolute inset-0 rounded-full bg-primary-500 pulse-ring" />
             <button
               onClick={stop}
-              className="relative w-16 h-16 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
+              className="relative w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
             >
               <StopIcon className="w-7 h-7" />
             </button>
           </div>
           <div className="flex flex-col items-center gap-1">
             <WaveAnimation />
-            <span className="text-red-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
+            <span className="text-primary-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
           </div>
         </div>
       )}
@@ -354,14 +354,14 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
           return (
             <div
               key={key}
-              className={`px-4 py-3 transition-colors ${showAmber ? 'bg-amber-50 border-l-2 border-amber-400' : ''}`}
+              className={`px-4 py-3 transition-colors ${showAmber ? 'bg-primary-50 border-l-2 border-primary-400' : ''}`}
             >
               <div className="flex items-center gap-2 mb-1">
-                <p className={`text-xs uppercase tracking-wider font-medium ${showAmber ? 'text-amber-600' : 'text-gray-400'}`}>
+                <p className={`text-xs uppercase tracking-wider font-medium ${showAmber ? 'text-primary-600' : 'text-gray-400'}`}>
                   {label}
                 </p>
                 {showAmber && (
-                  <span className="text-[10px] font-semibold text-amber-500 bg-amber-100 px-1.5 py-0.5 rounded">
+                  <span className="text-[10px] font-semibold text-primary-500 bg-primary-100 px-1.5 py-0.5 rounded">
                     Requerido
                   </span>
                 )}
@@ -375,16 +375,16 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
                     onChange={(e) => setEditValue(e.target.value)}
                     onBlur={saveEdit}
                     onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-                    className="flex-1 text-sm text-gray-800 border-b border-[#7c3aed] outline-none pb-0.5 bg-transparent"
+                    className="flex-1 text-sm text-gray-800 border-b border-primary-500 outline-none pb-0.5 bg-transparent"
                   />
                 ) : (
-                  <p className={`flex-1 text-sm ${display ? 'text-gray-800' : showAmber ? 'text-amber-400 italic' : 'text-gray-400 italic'}`}>
+                  <p className={`flex-1 text-sm ${display ? 'text-gray-800' : showAmber ? 'text-primary-400 italic' : 'text-gray-400 italic'}`}>
                     {display ?? 'Sin información'}
                   </p>
                 )}
                 <button
                   onClick={() => isEditing ? saveEdit() : startEdit(key)}
-                  className={`flex-shrink-0 p-1.5 rounded-full transition ${isEditing ? 'text-green-600 bg-green-50' : showAmber ? 'text-amber-400 hover:text-amber-600 hover:bg-amber-100' : 'text-gray-400 hover:text-[#7c3aed] hover:bg-purple-50'}`}
+                  className={`flex-shrink-0 p-1.5 rounded-full transition ${isEditing ? 'text-green-600 bg-green-50' : showAmber ? 'text-primary-400 hover:text-primary-600 hover:bg-primary-50' : 'text-gray-400 hover:text-primary-500 hover:bg-primary-50'}`}
                 >
                   {isEditing ? <CheckIcon /> : <PencilIcon />}
                 </button>
@@ -408,7 +408,7 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
           disabled={!canSubmit || submitting}
           className={`w-full py-3.5 rounded-full font-semibold text-base transition-all shadow-md
             ${canSubmit && !submitting
-              ? 'bg-[#7c3aed] text-white hover:bg-purple-700 active:scale-[0.98]'
+              ? 'bg-gradient-to-r from-primary-500 to-accent text-white hover:from-primary-600 hover:to-primary-500 active:scale-[0.98]'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
         >
@@ -421,7 +421,7 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
 
         {/* Counter hint — only shown when fields are missing */}
         <p
-          className={`text-xs text-amber-600 text-center transition-opacity duration-300 ${faltanCount > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`text-xs text-primary-600 text-center transition-opacity duration-300 ${faltanCount > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         >
           Falta completar {faltanCount} campo{faltanCount !== 1 ? 's' : ''} requerido{faltanCount !== 1 ? 's' : ''}
         </p>
@@ -494,7 +494,7 @@ function ConfirmacionScreen({ reporte, onReset }) {
             <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Tipo / Urgencia</p>
             <div className="flex flex-wrap gap-2">
               {reporte.tipo && (
-                <span className="bg-[#7c3aed] text-white text-xs font-semibold px-3 py-1 rounded-full">{reporte.tipo}</span>
+                <span className="bg-gradient-to-r from-primary-500 to-accent text-white text-xs font-semibold px-3 py-1 rounded-full">{reporte.tipo}</span>
               )}
               <UrgencyBadge urgencia={reporte.urgencia} />
             </div>
@@ -540,7 +540,7 @@ function ConfirmacionScreen({ reporte, onReset }) {
 
       <button
         onClick={onReset}
-        className="w-full py-3.5 bg-[#7c3aed] text-white rounded-full font-semibold text-base hover:bg-purple-700 active:scale-[0.98] transition-all shadow-md"
+        className="w-full py-3.5 bg-gradient-to-r from-primary-500 to-accent text-white rounded-full font-semibold text-base hover:from-primary-600 hover:to-primary-500 active:scale-[0.98] transition-all shadow-md"
       >
         Nuevo reporte
       </button>
@@ -559,19 +559,22 @@ function WelcomeScreen({ onConfirm }) {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen gradient-bg flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm flex flex-col items-center gap-8">
         {/* Logo */}
         <div className="flex flex-col items-center gap-3">
-          <div className="w-16 h-16 rounded-2xl bg-[#7c3aed] flex items-center justify-center shadow-lg">
-            <svg className="w-9 h-9 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-lg glow-effect">
+            <svg className="w-11 h-11 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="9" y="1" width="6" height="12" rx="3" />
               <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
               <line x1="12" y1="19" x2="12" y2="23" />
               <line x1="8" y1="23" x2="16" y2="23" />
             </svg>
           </div>
-          <p className="text-sm font-semibold text-[#7c3aed] tracking-wide">HU NOW · HUMAND</p>
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs font-medium text-primary-400 bg-primary-50 px-2 py-0.5 rounded-full">AI</span>
+            <p className="text-sm font-bold text-primary-600 tracking-wide">HU NOW</p>
+          </div>
         </div>
 
         {/* Heading */}
@@ -590,7 +593,7 @@ function WelcomeScreen({ onConfirm }) {
               onChange={e => { setLegajo(e.target.value); setError(false); }}
               onKeyDown={e => e.key === 'Enter' && handleConfirm()}
               placeholder="Juan123"
-              className={`w-full border rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-transparent transition ${error ? 'border-red-400 bg-red-50' : 'border-gray-300'}`}
+              className={`w-full border rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${error ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-white'}`}
             />
             {error && <p className="text-xs text-red-500">Ingresá tu legajo para continuar.</p>}
             {!error && <p className="text-xs text-gray-400">Tu legajo se compone de tu primer nombre y número. Ejemplo: Juan123</p>}
@@ -598,7 +601,7 @@ function WelcomeScreen({ onConfirm }) {
 
           <button
             onClick={handleConfirm}
-            className="w-full py-3.5 bg-[#7c3aed] text-white rounded-full font-semibold text-base hover:bg-purple-700 active:scale-[0.98] transition-all shadow-md"
+            className="w-full py-3.5 bg-gradient-to-r from-primary-500 to-accent text-white rounded-full font-semibold text-base hover:from-primary-600 hover:to-primary-500 active:scale-[0.98] transition-all shadow-md"
           >
             Continuar
           </button>
@@ -633,11 +636,11 @@ export default function App() {
 // ── Tab bar icons ──────────────────────────────────────────────────────────
 function TabBar({ active, onChange }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex z-20 safe-area-inset-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-100 flex z-20 safe-area-inset-bottom">
       <button
         onClick={() => onChange('reportar')}
         className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors
-          ${active === 'reportar' ? 'text-[#7c3aed]' : 'text-gray-400 hover:text-gray-600'}`}
+          ${active === 'reportar' ? 'text-primary-500' : 'text-gray-400 hover:text-gray-600'}`}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="9" y="1" width="6" height="12" rx="3" />
@@ -650,7 +653,7 @@ function TabBar({ active, onChange }) {
       <button
         onClick={() => onChange('mis-reportes')}
         className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors
-          ${active === 'mis-reportes' ? 'text-[#7c3aed]' : 'text-gray-400 hover:text-gray-600'}`}
+          ${active === 'mis-reportes' ? 'text-primary-500' : 'text-gray-400 hover:text-gray-600'}`}
       >
         <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -761,17 +764,22 @@ function HuNowApp({ legajo, onChangeUser }) {
   const isScrollable = state === STATES.REVIEWING || state === STATES.DONE;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen gradient-bg flex flex-col">
       {/* Header */}
-      <header className="bg-[#7c3aed] text-white px-4 py-4 flex items-center justify-between shadow-md sticky top-0 z-10">
+      <header className="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-4 flex items-center justify-between shadow-lg sticky top-0 z-10">
         <div className="flex items-center gap-3">
-          <MicIcon className="w-7 h-7" />
-          <h1 className="text-lg font-bold tracking-tight">Hu Now · Humand</h1>
+          <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+            <MicIcon className="w-5 h-5" />
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-medium bg-white/20 px-1.5 py-0.5 rounded">AI</span>
+            <h1 className="text-lg font-bold tracking-tight">HU NOW</h1>
+          </div>
         </div>
         <button
           onClick={onChangeUser}
           title="Cambiar usuario"
-          className="flex items-center gap-1.5 bg-purple-600 hover:bg-purple-500 rounded-full px-3 py-1.5 transition"
+          className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 rounded-full px-3 py-1.5 transition"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -802,7 +810,7 @@ function HuNowApp({ legajo, onChangeUser }) {
             </div>
             <button
               onClick={startRecording}
-              className="relative w-20 h-20 rounded-full bg-[#7c3aed] text-white flex items-center justify-center shadow-lg hover:bg-purple-700 active:scale-95 transition-all"
+              className="relative w-20 h-20 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-white flex items-center justify-center shadow-lg hover:from-primary-500 hover:to-primary-700 active:scale-95 transition-all glow-effect"
             >
               <MicIcon className="w-9 h-9" />
             </button>
@@ -813,22 +821,22 @@ function HuNowApp({ legajo, onChangeUser }) {
         {state === STATES.RECORDING && (
           <div className="flex flex-col items-center gap-6 text-center">
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-red-500 pulse-ring" />
+              <div className="absolute inset-0 rounded-full bg-primary-500 pulse-ring" />
               <button
                 onClick={stopRecording}
-                className="relative w-20 h-20 rounded-full bg-red-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
+                className="relative w-20 h-20 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
               >
                 <StopIcon className="w-8 h-8" />
               </button>
             </div>
             <WaveAnimation />
             <div>
-              <p className="text-red-600 text-3xl font-mono font-bold tabular-nums">
+              <p className="text-primary-600 text-3xl font-mono font-bold tabular-nums">
                 0:{String(seconds).padStart(2, '0')}
               </p>
               <p className="text-gray-500 text-sm mt-1">Grabando... (máx {MAX_SECONDS}s)</p>
             </div>
-            <button onClick={stopRecording} className="mt-2 px-6 py-2 border border-red-500 text-red-500 rounded-full font-medium hover:bg-red-50 transition">
+            <button onClick={stopRecording} className="mt-2 px-6 py-2 border border-primary-500 text-primary-500 rounded-full font-medium hover:bg-primary-50 transition">
               Detener
             </button>
           </div>
@@ -863,19 +871,22 @@ function HuNowApp({ legajo, onChangeUser }) {
         {state === STATES.ERROR && (
           <div className="flex flex-col items-center gap-6 text-center max-w-sm">
             <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
-              <span className="text-3xl">⚠</span>
+              <span className="text-3xl">!</span>
             </div>
             <p className="text-gray-800 text-lg font-semibold">
               {errorMsg || 'No pudimos procesar el audio. ¿Intentamos de nuevo?'}
             </p>
-            <button onClick={reset} className="px-8 py-3 bg-[#7c3aed] text-white rounded-full font-semibold hover:bg-purple-700 active:scale-[0.98] transition-all">
+            <button onClick={reset} className="px-8 py-3 bg-gradient-to-r from-primary-500 to-accent text-white rounded-full font-semibold hover:from-primary-600 hover:to-primary-500 active:scale-[0.98] transition-all">
               Reintentar
             </button>
           </div>
         )}
         {/* Footer */}
-        <footer className="text-center text-xs text-gray-400 py-4 border-t border-gray-100">
-          Powered by Humand · Gemini
+        <footer className="text-center text-xs text-gray-400 py-4 mt-auto">
+          <div className="flex items-center justify-center gap-1.5">
+            <span className="text-primary-400">AI</span>
+            <span>Powered by Humand</span>
+          </div>
         </footer>
       </main>
       )}

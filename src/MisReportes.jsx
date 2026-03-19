@@ -31,8 +31,8 @@ const URGENCIA_COLORS = {
 };
 
 const ESTADO_COLORS = {
-  'Enviado':     'bg-blue-100 text-blue-700',
-  'En revisión': 'bg-purple-100 text-purple-700',
+  'Enviado':     'bg-primary-100 text-primary-700',
+  'En revisión': 'bg-cyan-100 text-cyan-700',
   'En proceso':  'bg-amber-100 text-amber-700',
   'Resuelto':    'bg-green-100 text-green-700',
   'Cerrado':     'bg-gray-100 text-gray-500',
@@ -70,7 +70,7 @@ function BackButton({ onClick, label = 'Volver' }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1.5 text-sm text-[#7c3aed] font-medium hover:text-purple-800 transition mb-4"
+      className="flex items-center gap-1.5 text-sm text-primary-500 font-medium hover:text-primary-700 transition mb-4"
     >
       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="15 18 9 12 15 6" />
@@ -99,7 +99,7 @@ function ListView({ reportes, loading, onVerDetalle }) {
 
       {loading ? (
         <div className="flex items-center justify-center gap-2 py-16 text-gray-400 text-sm">
-          <div className="w-5 h-5 border-2 border-gray-200 border-t-[#7c3aed] rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-gray-200 border-t-primary-500 rounded-full animate-spin" />
           Cargando tus reportes...
         </div>
       ) : reportes.length === 0 ? (
@@ -147,7 +147,7 @@ function ListView({ reportes, loading, onVerDetalle }) {
               <div className="px-4 pb-3">
                 <button
                   onClick={() => onVerDetalle(r)}
-                  className="w-full py-2 border border-[#7c3aed] text-[#7c3aed] rounded-full text-sm font-medium hover:bg-purple-50 active:scale-[0.98] transition-all"
+                  className="w-full py-2 border border-primary-500 text-primary-500 rounded-full text-sm font-medium hover:bg-primary-50 active:scale-[0.98] transition-all"
                 >
                   Ver detalle
                 </button>
@@ -167,8 +167,8 @@ function HistorialTimeline({ historial }) {
   }
 
   const estadoColors = {
-    'Enviado':     'bg-blue-500',
-    'En revisión': 'bg-purple-500',
+    'Enviado':     'bg-primary-500',
+    'En revisión': 'bg-cyan-500',
     'En proceso':  'bg-amber-500',
     'Resuelto':    'bg-green-500',
     'Cerrado':     'bg-gray-400',
@@ -251,14 +251,14 @@ function DetailView({ reporte, onBack, recomendaciones, loadingRecs }) {
 
         {loadingRecs ? (
           <div className="flex items-center gap-2 text-gray-400 text-sm py-2">
-            <div className="w-4 h-4 border-2 border-gray-200 border-t-[#7c3aed] rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-gray-200 border-t-primary-500 rounded-full animate-spin" />
             Generando recomendaciones...
           </div>
         ) : recomendaciones && recomendaciones.length > 0 ? (
           <ul className="mt-2 space-y-2">
             {recomendaciones.map((rec, i) => (
               <li key={i} className="flex gap-2 text-sm text-gray-700">
-                <span className="text-[#7c3aed] font-bold flex-shrink-0">{i + 1}.</span>
+                <span className="text-primary-500 font-bold flex-shrink-0">{i + 1}.</span>
                 <span>{rec}</span>
               </li>
             ))}

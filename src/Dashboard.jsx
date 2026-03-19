@@ -10,8 +10,8 @@ const URGENCIA_COLORS = {
 };
 
 const ESTADO_COLORS = {
-  'Enviado':     'bg-blue-100 text-blue-700',
-  'En revisión': 'bg-purple-100 text-purple-700',
+  'Enviado':     'bg-primary-100 text-primary-700',
+  'En revisión': 'bg-cyan-100 text-cyan-700',
   'En proceso':  'bg-amber-100 text-amber-700',
   'Resuelto':    'bg-green-100 text-green-700',
   'Cerrado':     'bg-gray-100 text-gray-500',
@@ -90,9 +90,9 @@ function DetailPanel({ reporte, onClose, onEstadoChange }) {
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-1">
 
         {/* Humand notification banner */}
-        <div className="bg-purple-50 border border-purple-200 rounded-lg px-3 py-2.5 mb-4 flex items-start gap-2">
-          <span className="text-purple-500 text-base leading-none mt-0.5">🔔</span>
-          <p className="text-xs text-purple-700">
+        <div className="bg-primary-50 border border-primary-200 rounded-lg px-3 py-2.5 mb-4 flex items-start gap-2">
+          <span className="text-primary-500 text-base leading-none mt-0.5">*</span>
+          <p className="text-xs text-primary-700">
             <span className="font-semibold">Notificación enviada a Humand</span>
             {fechaGeneracion && <> · {fechaGeneracion}</>}
           </p>
@@ -106,19 +106,19 @@ function DetailPanel({ reporte, onClose, onEstadoChange }) {
               value={reporte.estado ?? 'Enviado'}
               onChange={handleEstado}
               disabled={updating}
-              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed] focus:border-transparent disabled:opacity-60"
+              className="flex-1 text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:opacity-60"
             >
               {ESTADOS_VALIDOS.map(e => (
                 <option key={e} value={e}>{e}</option>
               ))}
             </select>
-            {updating && <div className="w-4 h-4 border-2 border-gray-300 border-t-[#7c3aed] rounded-full animate-spin" />}
+            {updating && <div className="w-4 h-4 border-2 border-gray-300 border-t-primary-500 rounded-full animate-spin" />}
           </div>
         </div>
 
         {/* Badges */}
         <div className="flex flex-wrap gap-2 pb-3 border-b border-gray-100 mb-1">
-          <span className="bg-[#7c3aed] text-white text-xs font-semibold px-3 py-1 rounded-full">{reporte.tipo}</span>
+          <span className="bg-gradient-to-r from-primary-500 to-cyan-500 text-white text-xs font-semibold px-3 py-1 rounded-full">{reporte.tipo}</span>
           <UrgencyBadge urgencia={reporte.urgencia} />
           <EstadoBadge estado={reporte.estado} />
         </div>
@@ -155,7 +155,7 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
       <select
         value={filtros.estado}
         onChange={e => onChange('estado', e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
+        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
       >
         <option value="Todos">Estado: Todos</option>
         {ESTADOS_VALIDOS.map(e => <option key={e} value={e}>{e}</option>)}
@@ -165,7 +165,7 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
       <select
         value={filtros.urgencia}
         onChange={e => onChange('urgencia', e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
+        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
       >
         <option value="Todos">Urgencia: Todos</option>
         {['Alta', 'Media', 'Baja'].map(u => <option key={u} value={u}>{u}</option>)}
@@ -175,7 +175,7 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
       <select
         value={filtros.tipo}
         onChange={e => onChange('tipo', e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed]"
+        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500"
       >
         <option value="Todos">Tipo: Todos</option>
         {tiposDisponibles.map(t => <option key={t} value={t}>{t}</option>)}
@@ -187,7 +187,7 @@ function FilterBar({ filtros, onChange, tiposDisponibles }) {
         value={filtros.legajo}
         onChange={e => onChange('legajo', e.target.value)}
         placeholder="Filtrar por legajo"
-        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#7c3aed] w-40"
+        className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary-500 w-40"
       />
 
       {/* Clear */}
@@ -209,7 +209,7 @@ function ReporteRow({ reporte, isSelected, onClick }) {
   return (
     <div
       onClick={onClick}
-      className={`flex items-start gap-4 px-6 py-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-gray-50 ${isSelected ? 'bg-purple-50 border-l-4 border-l-[#7c3aed]' : 'border-l-4 border-l-transparent'}`}
+      className={`flex items-start gap-4 px-6 py-4 border-b border-gray-100 cursor-pointer transition-colors hover:bg-primary-50/50 ${isSelected ? 'bg-primary-50 border-l-4 border-l-primary-500' : 'border-l-4 border-l-transparent'}`}
     >
       {/* Urgency dot */}
       <div className={`w-2.5 h-2.5 rounded-full mt-1.5 flex-shrink-0 ${dot}`} />
@@ -231,8 +231,8 @@ function ReporteRow({ reporte, isSelected, onClick }) {
       </div>
 
       {/* Ver detalle */}
-      <button className="flex-shrink-0 text-xs font-medium text-[#7c3aed] hover:text-purple-800 transition mt-1">
-        Ver detalle →
+      <button className="flex-shrink-0 text-xs font-medium text-primary-500 hover:text-primary-700 transition mt-1">
+        Ver detalle
       </button>
     </div>
   );
@@ -311,29 +311,34 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
 
       {/* Header */}
-      <header className="bg-[#7c3aed] text-white px-6 py-4 flex items-center justify-between shadow-md sticky top-0 z-20">
+      <header className="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-4 flex items-center justify-between shadow-lg sticky top-0 z-20">
         <div className="flex items-center gap-3">
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="9" y="1" width="6" height="12" rx="3" />
-            <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-            <line x1="12" y1="19" x2="12" y2="23" />
-            <line x1="8" y1="23" x2="16" y2="23" />
-          </svg>
-          <div>
-            <h1 className="text-base font-bold leading-none">Hu Now · Panel de gestión</h1>
-            <p className="text-purple-200 text-xs mt-0.5">Humand Incident Management</p>
+          <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="9" y="1" width="6" height="12" rx="3" />
+              <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+              <line x1="12" y1="19" x2="12" y2="23" />
+              <line x1="8" y1="23" x2="16" y2="23" />
+            </svg>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] font-medium bg-white/20 px-1.5 py-0.5 rounded">AI</span>
+            <div>
+              <h1 className="text-base font-bold leading-none">HU NOW</h1>
+              <p className="text-primary-100 text-xs mt-0.5">Panel de gestión</p>
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
             {loading
-              ? <p className="text-purple-200 text-sm">Cargando...</p>
+              ? <p className="text-primary-100 text-sm">Cargando...</p>
               : <p className="text-white font-semibold text-sm">{activos} reporte{activos !== 1 ? 's' : ''} activo{activos !== 1 ? 's' : ''}</p>
             }
           </div>
           <button
             onClick={fetchReportes}
-            className="w-8 h-8 flex items-center justify-center rounded-full bg-purple-600 hover:bg-purple-500 transition"
+            className="w-8 h-8 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition"
             title="Actualizar"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -362,7 +367,7 @@ export default function Dashboard() {
           <div className="flex-1 overflow-y-auto">
             {loading ? (
               <div className="flex items-center justify-center gap-3 py-20 text-gray-400 text-sm">
-                <div className="w-5 h-5 border-2 border-gray-200 border-t-[#7c3aed] rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-gray-200 border-t-primary-500 rounded-full animate-spin" />
                 Cargando reportes...
               </div>
             ) : filtrados.length === 0 ? (
