@@ -517,6 +517,21 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
 // ── Confirmation screen ────────────────────────────────────────────────────
 function ConfirmacionScreen({ reporte, onReset }) {
   const [copied, setCopied] = useState(false);
+  const [recomendaciones, setRecomendaciones] = useState([]);
+  const [loadingRec, setLoadingRec] = useState(true);
+
+  useEffect(() => {
+    if (!reporte.tipo || !reporte.descripcion_formal) { setLoadingRec(false); return; }
+    fetch('/api/recomendaciones', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tipo: reporte.tipo, descripcion_formal: reporte.descripcion_formal }),
+    })
+      .then(r => r.json())
+      .then(d => { if (Array.isArray(d.recomendaciones)) setRecomendaciones(d.recomendaciones); })
+      .catch(() => {})
+      .finally(() => setLoadingRec(false));
+  }, []);
 
   const copyId = () => {
     navigator.clipboard.writeText(reporte.id).then(() => {
@@ -640,6 +655,25 @@ function ConfirmacionScreen({ reporte, onReset }) {
       <p className="text-sm text-[#64748B] text-center font-medium">
         Guardá el ID para hacer seguimiento de tu reporte.
       </p>
+
+      {/* Recomendaciones */}
+      {(loadingRec || recomendaciones.length > 0) && (
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
+          <p className="text-xs font-semibold text-blue-700 uppercase tracking-wider mb-2">Mientras se resuelve el incidente</p>
+          {loadingRec ? (
+            <p className="text-sm text-blue-400">Generando recomendaciones...</p>
+          ) : (
+            <ul className="flex flex-col gap-2">
+              {recomendaciones.map((r, i) => (
+                <li key={i} className="flex gap-2 text-sm text-blue-900">
+                  <span className="mt-0.5 text-blue-400">•</span>
+                  <span>{r}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
 
       <button
         onClick={onReset}
