@@ -79,33 +79,20 @@ function displayVal(key, value) {
   return String(value);
 }
 
-// ── Logo Component - Two-tone like the actual logo ─────────────────────────
-function HuNowLogo({ size = 'md', variant = 'dark' }) {
-  const sizes = {
-    sm: { icon: 'w-8 h-8', iconInner: 'w-4 h-4', hu: 'text-lg', now: 'text-lg' },
-    md: { icon: 'w-10 h-10', iconInner: 'w-5 h-5', hu: 'text-xl', now: 'text-xl' },
-    lg: { icon: 'w-14 h-14', iconInner: 'w-7 h-7', hu: 'text-3xl', now: 'text-3xl' },
+// ── Logo Component - Official logo image ───────────────────────────────────
+function HuNowLogo({ size = 'md' }) {
+  const maxWidths = {
+    sm: 'max-w-[100px]',
+    md: 'max-w-[100px]',
+    lg: 'max-w-[160px]',
   };
-  const s = sizes[size];
-  const isDark = variant === 'dark';
   
   return (
-    <div className="flex items-center gap-3">
-      {/* Microphone icon - neon glow effect like logo */}
-      <div className={`${s.icon} rounded-xl bg-[#0F2B5B] flex items-center justify-center glow-neon`}>
-        <svg className={`${s.iconInner} text-[#0EA5E9]`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="9" y="1" width="6" height="12" rx="3" />
-          <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-          <line x1="12" y1="19" x2="12" y2="23" />
-          <line x1="8" y1="23" x2="16" y2="23" />
-        </svg>
-      </div>
-      {/* Two-tone text: HU in navy, NOW in neon blue */}
-      <div className="flex items-baseline">
-        <span className={`${s.hu} font-black ${isDark ? 'text-[#0F2B5B]' : 'text-white'}`}>HU</span>
-        <span className={`${s.now} font-black text-[#0EA5E9]`}> NOW</span>
-      </div>
-    </div>
+    <img 
+      src="/logo-hunow.png" 
+      alt="HU NOW" 
+      className={`${maxWidths[size]} h-auto`}
+    />
   );
 }
 
@@ -676,7 +663,7 @@ function WelcomeScreen({ onConfirm }) {
     <div className="min-h-screen bg-navy-gradient flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm flex flex-col items-center gap-10">
         {/* Logo */}
-        <HuNowLogo size="lg" variant="light" />
+        <HuNowLogo size="lg" />
 
         {/* Card */}
         <div className="w-full bg-white rounded-3xl p-6 shadow-2xl flex flex-col gap-5">
@@ -870,7 +857,7 @@ function HuNowApp({ legajo, onChangeUser }) {
     <div className="min-h-screen bg-app flex flex-col">
       {/* Header */}
       <header className="bg-white border-b border-[#E0EEFF] px-4 py-3 flex items-center justify-between sticky top-0 z-10">
-        <HuNowLogo size="sm" variant="dark" />
+        <HuNowLogo size="sm" />
         <button
           onClick={onChangeUser}
           title="Cambiar usuario"

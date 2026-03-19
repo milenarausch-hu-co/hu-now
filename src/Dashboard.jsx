@@ -17,31 +17,16 @@ const ESTADO_COLORS = {
   'Cerrado':     'bg-[#64748B] text-white',
 };
 
-// ── Logo Component ─────────────────────────────────────────────────────────
-function HuNowLogo({ size = 'md' }) {
-  const sizes = {
-    sm: { icon: 'w-8 h-8', iconInner: 'w-4 h-4', hu: 'text-lg', now: 'text-lg' },
-    md: { icon: 'w-10 h-10', iconInner: 'w-5 h-5', hu: 'text-xl', now: 'text-xl' },
-  };
-  const s = sizes[size];
-  
+// ── Logo Component - Official logo image ───────────────────────────────────
+function HuNowLogo() {
   return (
     <div className="flex items-center gap-3">
-      <div className={`${s.icon} rounded-xl bg-[#0F2B5B] flex items-center justify-center`} style={{ boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' }}>
-        <svg className={`${s.iconInner} text-[#0EA5E9]`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="9" y="1" width="6" height="12" rx="3" />
-          <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-          <line x1="12" y1="19" x2="12" y2="23" />
-          <line x1="8" y1="23" x2="16" y2="23" />
-        </svg>
-      </div>
-      <div className="flex flex-col">
-        <div className="flex items-baseline">
-          <span className={`${s.hu} font-black text-[#0F2B5B]`}>HU</span>
-          <span className={`${s.now} font-black text-[#0EA5E9]`}> NOW</span>
-        </div>
-        <span className="text-xs font-medium text-[#64748B]">Panel de gestión</span>
-      </div>
+      <img 
+        src="/logo-hunow.png" 
+        alt="HU NOW" 
+        className="max-w-[100px] h-auto"
+      />
+      <span className="text-xs font-medium text-[#64748B] border-l border-[#E0EEFF] pl-3">Panel de gestión</span>
     </div>
   );
 }
