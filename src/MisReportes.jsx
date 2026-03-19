@@ -25,17 +25,17 @@ function arrayToText(val) {
 
 // ── Constants ──────────────────────────────────────────────────────────────
 const URGENCIA_COLORS = {
-  Alta:  'bg-red-100 text-red-700',
-  Media: 'bg-amber-100 text-amber-700',
-  Baja:  'bg-green-100 text-green-700',
+  Alta:  'bg-red-600 text-white',
+  Media: 'bg-yellow-500 text-yellow-900',
+  Baja:  'bg-green-600 text-white',
 };
 
 const ESTADO_COLORS = {
-  'Enviado':     'bg-primary-100 text-primary-700',
-  'En revisión': 'bg-cyan-100 text-cyan-700',
-  'En proceso':  'bg-amber-100 text-amber-700',
-  'Resuelto':    'bg-green-100 text-green-700',
-  'Cerrado':     'bg-gray-100 text-gray-500',
+  'Enviado':     'bg-blue-600 text-white',
+  'En revisión': 'bg-purple-600 text-white',
+  'En proceso':  'bg-amber-500 text-white',
+  'Resuelto':    'bg-green-600 text-white',
+  'Cerrado':     'bg-gray-500 text-white',
 };
 
 const TIEMPO_URGENCIA = {
@@ -57,20 +57,20 @@ function getMensajeEstado(reporte) {
 
 // ── Sub-components ─────────────────────────────────────────────────────────
 function UrgencyBadge({ urgencia }) {
-  const cls = URGENCIA_COLORS[urgencia] ?? 'bg-gray-100 text-gray-500';
-  return <span className={`${cls} text-xs font-semibold px-2.5 py-1 rounded-full`}>{urgencia ?? '—'}</span>;
+  const cls = URGENCIA_COLORS[urgencia] ?? 'bg-gray-500 text-white';
+  return <span className={`${cls} text-xs font-bold px-3 py-1.5 rounded-full shadow-sm`}>{urgencia ?? '—'}</span>;
 }
 
 function EstadoBadge({ estado }) {
-  const cls = ESTADO_COLORS[estado] ?? 'bg-gray-100 text-gray-500';
-  return <span className={`${cls} text-xs font-semibold px-2.5 py-1 rounded-full`}>{estado ?? '—'}</span>;
+  const cls = ESTADO_COLORS[estado] ?? 'bg-gray-500 text-white';
+  return <span className={`${cls} text-xs font-bold px-3 py-1.5 rounded-full shadow-sm`}>{estado ?? '—'}</span>;
 }
 
 function BackButton({ onClick, label = 'Volver' }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1.5 text-sm text-primary-500 font-medium hover:text-primary-700 transition mb-4"
+      className="flex items-center gap-2 text-sm text-primary-600 font-bold hover:text-primary-800 transition mb-4 bg-primary-50 px-4 py-2 rounded-full"
     >
       <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="15 18 9 12 15 6" />
@@ -84,9 +84,9 @@ function DetailRow({ label, value }) {
   const text = arrayToText(value);
   if (!text) return null;
   return (
-    <div className="py-2.5 border-b border-gray-100 last:border-0">
-      <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-0.5">{label}</p>
-      <p className="text-sm text-gray-800">{text}</p>
+    <div className="py-3 border-b border-gray-100 last:border-0">
+      <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">{label}</p>
+      <p className="text-sm text-gray-800 font-medium">{text}</p>
     </div>
   );
 }
@@ -95,61 +95,66 @@ function DetailRow({ label, value }) {
 function ListView({ reportes, loading, onVerDetalle }) {
   return (
     <div className="flex flex-col px-4 py-4">
-      <h2 className="text-lg font-bold text-gray-900 mb-4">Mis reportes</h2>
+      <h2 className="text-xl font-bold text-gray-900 mb-4">Mis reportes</h2>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-2 py-16 text-gray-400 text-sm">
-          <div className="w-5 h-5 border-2 border-gray-200 border-t-primary-500 rounded-full animate-spin" />
+        <div className="flex items-center justify-center gap-3 py-16 text-gray-500 text-sm">
+          <div className="w-6 h-6 border-3 border-gray-300 border-t-primary-500 rounded-full animate-spin" />
           Cargando tus reportes...
         </div>
       ) : reportes.length === 0 ? (
         <div className="text-center py-16">
-          <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center text-2xl mx-auto mb-3">📋</div>
-          <p className="text-gray-700 font-semibold">Todavía no enviaste ningún reporte.</p>
-          <p className="text-sm text-gray-400 mt-1">Usá la tab "Reportar" para describir un incidente.</p>
+          <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-4">
+            <svg className="w-10 h-10 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          </div>
+          <p className="text-gray-800 font-bold text-lg">Todavía no enviaste ningún reporte.</p>
+          <p className="text-sm text-gray-500 mt-2">Usá la tab "Reportar" para describir un incidente.</p>
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
-          <p className="text-xs text-gray-500 mb-1">
+        <div className="flex flex-col gap-4">
+          <p className="text-sm text-gray-600 font-semibold">
             {reportes.length} reporte{reportes.length !== 1 ? 's' : ''} encontrado{reportes.length !== 1 ? 's' : ''}
           </p>
 
           {reportes.map(r => (
-            <div key={r.id} className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+            <div key={r.id} className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg overflow-hidden">
               {/* Header */}
-              <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between gap-2">
+              <div className="px-4 py-3 border-b-2 border-gray-100 bg-gray-50 flex items-center justify-between gap-2">
                 <div>
-                  <p className="font-mono text-xs text-gray-500">{r.id}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{fmtDate(r.fecha_generacion_reporte)}</p>
+                  <p className="font-mono text-xs font-bold text-gray-700 bg-gray-200 px-2 py-1 rounded inline-block">{r.id}</p>
+                  <p className="text-xs text-gray-500 mt-1">{fmtDate(r.fecha_generacion_reporte)}</p>
                 </div>
-                <div className="flex flex-col items-end gap-1.5">
+                <div className="flex flex-col items-end gap-2">
                   <UrgencyBadge urgencia={r.urgencia} />
                   <EstadoBadge estado={r.estado} />
                 </div>
               </div>
 
               {/* Body */}
-              <div className="px-4 py-3">
-                <p className="text-sm font-medium text-gray-900 mb-2">{r.descripcion_corta ?? '—'}</p>
+              <div className="px-4 py-4">
+                <p className="text-base font-semibold text-gray-900 mb-3">{r.descripcion_corta ?? '—'}</p>
 
                 {/* Estado message */}
-                <p className="text-xs text-gray-600 bg-gray-50 rounded-lg px-3 py-2 mb-2">
+                <p className="text-sm text-gray-700 bg-gray-100 rounded-xl px-4 py-3 mb-3 font-medium">
                   {getMensajeEstado(r)}
                 </p>
 
                 {/* Tiempo estimado */}
                 {TIEMPO_URGENCIA[r.urgencia] && (
-                  <p className="text-xs text-gray-400">{TIEMPO_URGENCIA[r.urgencia]}</p>
+                  <p className="text-xs text-gray-500 font-medium">{TIEMPO_URGENCIA[r.urgencia]}</p>
                 )}
               </div>
 
               {/* Footer */}
-              <div className="px-4 pb-3">
+              <div className="px-4 pb-4">
                 <button
                   onClick={() => onVerDetalle(r)}
-                  className="w-full py-2 border border-primary-500 text-primary-500 rounded-full text-sm font-medium hover:bg-primary-50 active:scale-[0.98] transition-all"
+                  className="w-full py-3 bg-primary-600 text-white rounded-full text-sm font-bold hover:bg-primary-700 active:scale-[0.98] transition-all shadow-md"
                 >
-                  Ver detalle
+                  Ver detalle completo
                 </button>
               </div>
             </div>
@@ -163,15 +168,15 @@ function ListView({ reportes, loading, onVerDetalle }) {
 // ── State history timeline ─────────────────────────────────────────────────
 function HistorialTimeline({ historial }) {
   if (!historial || historial.length === 0) {
-    return <p className="text-xs text-gray-400 italic">Sin historial disponible.</p>;
+    return <p className="text-sm text-gray-500 italic">Sin historial disponible.</p>;
   }
 
   const estadoColors = {
-    'Enviado':     'bg-primary-500',
-    'En revisión': 'bg-cyan-500',
+    'Enviado':     'bg-blue-600',
+    'En revisión': 'bg-purple-600',
     'En proceso':  'bg-amber-500',
-    'Resuelto':    'bg-green-500',
-    'Cerrado':     'bg-gray-400',
+    'Resuelto':    'bg-green-600',
+    'Cerrado':     'bg-gray-500',
   };
 
   return (
@@ -180,13 +185,13 @@ function HistorialTimeline({ historial }) {
         <div key={i} className="flex gap-3">
           {/* Dot + line */}
           <div className="flex flex-col items-center">
-            <div className={`w-3 h-3 rounded-full flex-shrink-0 mt-0.5 ${estadoColors[entry.estado] ?? 'bg-gray-300'}`} />
-            {i < historial.length - 1 && <div className="w-0.5 flex-1 bg-gray-200 my-1" />}
+            <div className={`w-4 h-4 rounded-full flex-shrink-0 mt-0.5 ${estadoColors[entry.estado] ?? 'bg-gray-400'} shadow-sm`} />
+            {i < historial.length - 1 && <div className="w-0.5 flex-1 bg-gray-300 my-1" />}
           </div>
           {/* Content */}
           <div className={`${i < historial.length - 1 ? 'pb-4' : 'pb-1'}`}>
-            <p className="text-sm font-semibold text-gray-800">{entry.estado}</p>
-            <p className="text-xs text-gray-400">{fmtDateShort(entry.fecha)}</p>
+            <p className="text-sm font-bold text-gray-800">{entry.estado}</p>
+            <p className="text-xs text-gray-500">{fmtDateShort(entry.fecha)}</p>
           </div>
         </div>
       ))}
@@ -198,31 +203,31 @@ function HistorialTimeline({ historial }) {
 function DetailView({ reporte, onBack, recomendaciones, loadingRecs }) {
   return (
     <div className="flex flex-col px-4 py-4 gap-4">
-      <BackButton onClick={onBack} label="Volver a resultados" />
+      <BackButton onClick={onBack} label="Volver a mis reportes" />
 
       {/* ID + badges */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-        <div className="bg-gray-50 px-4 py-3 border-b border-gray-100 flex items-center justify-between gap-2">
+      <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg overflow-hidden">
+        <div className="bg-gradient-to-r from-primary-600 to-cyan-600 px-5 py-4 flex items-center justify-between gap-2">
           <div>
-            <p className="font-mono font-bold text-gray-900">{reporte.id}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{fmtDate(reporte.fecha_generacion_reporte)}</p>
+            <p className="font-mono font-black text-white text-lg">{reporte.id}</p>
+            <p className="text-xs text-primary-100 mt-0.5">{fmtDate(reporte.fecha_generacion_reporte)}</p>
           </div>
-          <div className="flex flex-col items-end gap-1.5">
+          <div className="flex flex-col items-end gap-2">
             <UrgencyBadge urgencia={reporte.urgencia} />
             <EstadoBadge estado={reporte.estado} />
           </div>
         </div>
 
         {/* Estado message */}
-        <div className="px-4 py-3 border-b border-gray-100">
-          <p className="text-sm text-gray-700">{getMensajeEstado(reporte)}</p>
+        <div className="px-5 py-4 border-b-2 border-gray-100 bg-gray-50">
+          <p className="text-sm text-gray-800 font-medium">{getMensajeEstado(reporte)}</p>
           {TIEMPO_URGENCIA[reporte.urgencia] && (
-            <p className="text-xs text-gray-400 mt-1">{TIEMPO_URGENCIA[reporte.urgencia]}</p>
+            <p className="text-xs text-gray-500 mt-1">{TIEMPO_URGENCIA[reporte.urgencia]}</p>
           )}
         </div>
 
         {/* All fields */}
-        <div className="px-4 pb-2">
+        <div className="px-5 pb-3">
           <DetailRow label="Nombre del reportante"      value={reporte.nombre_reportante} />
           <DetailRow label="Fecha y hora del incidente" value={reporte.fecha_hora_incidente} />
           <DetailRow label="Tipo de incidente"          value={reporte.tipo} />
@@ -240,31 +245,31 @@ function DetailView({ reporte, onBack, recomendaciones, loadingRecs }) {
       </div>
 
       {/* Historial de estados */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
-        <h3 className="text-sm font-semibold text-gray-800 mb-4">Historial de estados</h3>
+      <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg p-5">
+        <h3 className="text-base font-bold text-gray-900 mb-4">Historial de estados</h3>
         <HistorialTimeline historial={reporte.historial_estados} />
       </div>
 
       {/* Recomendaciones AI */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
-        <h3 className="text-sm font-semibold text-gray-800 mb-1">Mientras se resuelve tu reporte:</h3>
+      <div className="bg-white border-2 border-gray-200 rounded-2xl shadow-lg p-5">
+        <h3 className="text-base font-bold text-gray-900 mb-2">Mientras se resuelve tu reporte:</h3>
 
         {loadingRecs ? (
-          <div className="flex items-center gap-2 text-gray-400 text-sm py-2">
-            <div className="w-4 h-4 border-2 border-gray-200 border-t-primary-500 rounded-full animate-spin" />
+          <div className="flex items-center gap-3 text-gray-500 text-sm py-3">
+            <div className="w-5 h-5 border-2 border-gray-300 border-t-primary-500 rounded-full animate-spin" />
             Generando recomendaciones...
           </div>
         ) : recomendaciones && recomendaciones.length > 0 ? (
-          <ul className="mt-2 space-y-2">
+          <ul className="mt-3 space-y-3">
             {recomendaciones.map((rec, i) => (
-              <li key={i} className="flex gap-2 text-sm text-gray-700">
-                <span className="text-primary-500 font-bold flex-shrink-0">{i + 1}.</span>
-                <span>{rec}</span>
+              <li key={i} className="flex gap-3 text-sm text-gray-700">
+                <span className="w-6 h-6 rounded-full bg-primary-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0">{i + 1}</span>
+                <span className="pt-0.5">{rec}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-xs text-gray-400 italic mt-1">No se pudieron cargar las recomendaciones.</p>
+          <p className="text-sm text-gray-500 italic mt-2">No se pudieron cargar las recomendaciones.</p>
         )}
       </div>
     </div>

@@ -18,8 +18,8 @@
 
 /* Pulse animation for recording button */
 @keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.4); opacity: 0; }
+  0% { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 .pulse-ring {
@@ -35,23 +35,65 @@
   animation: spin 1s linear infinite;
 }
 
-/* AI-inspired glow effect */
+/* AI-inspired glow effect - more intense */
 @keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(14, 165, 233, 0.3), 0 0 40px rgba(6, 182, 212, 0.2); }
-  50% { box-shadow: 0 0 30px rgba(14, 165, 233, 0.5), 0 0 60px rgba(6, 182, 212, 0.3); }
+  0%, 100% { 
+    box-shadow: 0 0 25px rgba(14, 165, 233, 0.5), 
+                0 0 50px rgba(6, 182, 212, 0.3),
+                0 4px 20px rgba(0, 0, 0, 0.15); 
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(14, 165, 233, 0.7), 
+                0 0 70px rgba(6, 182, 212, 0.4),
+                0 4px 20px rgba(0, 0, 0, 0.15); 
+  }
 }
 
 .glow-effect {
   animation: glow 2s ease-in-out infinite;
 }
 
-/* Subtle gradient background */
+/* Deep gradient background with more visual interest */
 .gradient-bg {
-  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #F0FDFA 100%);
+  background: linear-gradient(180deg, #0C4A6E 0%, #075985 30%, #0369A1 70%, #0284C7 100%);
+  min-height: 100vh;
 }
 
-/* Glass effect for cards */
+/* Light gradient for cards/content areas */
+.gradient-bg-light {
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #ECFEFF 100%);
+}
+
+/* Glass card with more depth */
 .glass-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* Elevated card */
+.elevated-card {
+  background: white;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Success animation */
+@keyframes success-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.success-bounce {
+  animation: success-bounce 0.6s ease-in-out;
+}
+
+/* Confetti-like celebration effect */
+@keyframes celebrate {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.celebrate {
+  animation: celebrate 0.5s ease-out forwards;
 }

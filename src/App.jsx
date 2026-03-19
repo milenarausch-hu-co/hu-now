@@ -29,6 +29,24 @@ const FIELD_LABELS = {
   responsable_sugerido:    'Responsable sugerido',
 };
 
+// Field icons mapping
+const FIELD_ICONS = {
+  nombre_reportante:       'user',
+  fecha_hora_incidente:    'calendar',
+  tipo:                    'tag',
+  area:                    'building',
+  ubicacion:               'location',
+  descripcion_corta:       'text',
+  descripcion_formal:      'document',
+  personas_afectadas:      'users',
+  testigos:                'eye',
+  sistemas_involucrados:   'gear',
+  requiere_atencion_medica:'medical',
+  acciones_ya_tomadas:     'check',
+  urgencia:                'alert',
+  responsable_sugerido:    'person',
+};
+
 // ── Validation ─────────────────────────────────────────────────────────────
 const CAMPOS_OBLIGATORIOS = [
   { key: 'nombre_reportante',    pregunta: '¿Cuál es tu nombre?' },
@@ -62,6 +80,39 @@ function displayVal(key, value) {
   return String(value);
 }
 
+// ── Logo Component ─────────────────────────────────────────────────────────
+function HuNowLogo({ size = 'md', variant = 'light' }) {
+  const sizes = {
+    sm: { container: 'w-10 h-10', icon: 'w-5 h-5', text: 'text-sm', badge: 'text-[8px] px-1' },
+    md: { container: 'w-14 h-14', icon: 'w-7 h-7', text: 'text-lg', badge: 'text-[10px] px-1.5' },
+    lg: { container: 'w-20 h-20', icon: 'w-10 h-10', text: 'text-xl', badge: 'text-xs px-2' },
+  };
+  const s = sizes[size];
+  const isLight = variant === 'light';
+  
+  return (
+    <div className="flex items-center gap-3">
+      <div className={`${s.container} rounded-2xl bg-gradient-to-br from-cyan-400 via-primary-500 to-primary-600 flex items-center justify-center shadow-lg ${size === 'lg' ? 'glow-effect' : ''}`}>
+        <svg className={`${s.icon} text-white`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="9" y="1" width="6" height="12" rx="3" />
+          <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+          <line x1="12" y1="19" x2="12" y2="23" />
+          <line x1="8" y1="23" x2="16" y2="23" />
+        </svg>
+      </div>
+      <div className="flex flex-col">
+        <div className="flex items-center gap-1.5">
+          <span className={`${s.badge} py-0.5 rounded font-bold ${isLight ? 'bg-cyan-400 text-primary-900' : 'bg-primary-100 text-primary-600'}`}>AI</span>
+          <span className={`${s.text} font-bold ${isLight ? 'text-white' : 'text-primary-700'}`}>HU NOW</span>
+        </div>
+        {size !== 'sm' && (
+          <span className={`text-xs ${isLight ? 'text-primary-200' : 'text-gray-500'}`}>by Humand</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ── Icons ──────────────────────────────────────────────────────────────────
 function MicIcon({ className }) {
   return (
@@ -84,7 +135,7 @@ function StopIcon({ className }) {
 
 function PencilIcon() {
   return (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
     </svg>
@@ -93,8 +144,32 @@ function PencilIcon() {
 
 function CheckIcon() {
   return (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
+function FieldIcon({ type, className = "w-4 h-4" }) {
+  const icons = {
+    user: <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />,
+    calendar: <><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></>,
+    tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><circle cx="7" cy="7" r="1" /></>,
+    building: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></>,
+    location: <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></>,
+    text: <><line x1="17" y1="10" x2="3" y2="10" /><line x1="21" y1="6" x2="3" y2="6" /><line x1="21" y1="14" x2="3" y2="14" /><line x1="17" y1="18" x2="3" y2="18" /></>,
+    document: <><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></>,
+    users: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></>,
+    eye: <><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></>,
+    gear: <><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" /></>,
+    medical: <><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></>,
+    check: <><polyline points="20 6 9 17 4 12" /></>,
+    alert: <><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></>,
+    person: <><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>,
+  };
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      {icons[type] || icons.text}
     </svg>
   );
 }
@@ -102,25 +177,31 @@ function CheckIcon() {
 function WaveAnimation({ small }) {
   const bars = small ? 4 : 5;
   const cls = small
-    ? 'wave-bar w-1 h-4 bg-primary-400 rounded-full origin-bottom'
-    : 'wave-bar w-1.5 h-8 bg-primary-500 rounded-full origin-bottom';
+    ? 'wave-bar w-1 h-5 bg-white rounded-full origin-bottom'
+    : 'wave-bar w-2 h-10 bg-white rounded-full origin-bottom';
   return (
-    <div className={`flex items-center justify-center gap-1 ${small ? 'h-6' : 'h-10'}`}>
+    <div className={`flex items-center justify-center gap-1 ${small ? 'h-6' : 'h-12'}`}>
       {[...Array(bars)].map((_, i) => <div key={i} className={cls} />)}
     </div>
   );
 }
 
-function Spinner({ small }) {
+function Spinner({ small, light }) {
+  const baseColor = light ? 'border-white/30' : 'border-primary-200';
+  const spinColor = light ? 'border-t-white' : 'border-t-primary-500';
   return (
-    <div className={`spinner border-primary-100 border-t-primary-500 rounded-full ${small ? 'w-5 h-5 border-2' : 'w-12 h-12 border-4'}`} />
+    <div className={`spinner ${baseColor} ${spinColor} rounded-full ${small ? 'w-5 h-5 border-2' : 'w-12 h-12 border-4'}`} />
   );
 }
 
 function UrgencyBadge({ urgencia }) {
-  const colors = { Alta: 'bg-red-500', Media: 'bg-yellow-500', Baja: 'bg-green-500' };
+  const colors = { 
+    Alta: 'bg-red-600 text-white', 
+    Media: 'bg-yellow-500 text-yellow-900', 
+    Baja: 'bg-green-600 text-white' 
+  };
   return (
-    <span className={`${colors[urgencia] || 'bg-gray-400'} text-white text-xs font-semibold px-3 py-1 rounded-full`}>
+    <span className={`${colors[urgencia] || 'bg-gray-500 text-white'} text-xs font-bold px-3 py-1.5 rounded-full shadow-sm`}>
       {urgencia}
     </span>
   );
@@ -201,26 +282,26 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
   // ── State B — all fields complete ──
   if (allDone) {
     return (
-      <div className="flex items-center justify-center gap-3 py-3">
+      <div className="flex items-center justify-center gap-3 py-4">
         {recState === 'idle' && (
           <button
             onClick={start}
-            className="flex items-center gap-2 px-4 py-2 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full text-sm font-medium transition"
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-full text-sm font-semibold transition shadow-md"
           >
             <MicIcon className="w-4 h-4" /> ¿Querés agregar algo más?
           </button>
         )}
         {recState === 'recording' && (
-          <div className="flex items-center gap-3">
-            <button onClick={stop} className="flex items-center gap-2 px-4 py-2 bg-primary-500 text-white rounded-full text-sm font-medium">
-              <StopIcon className="w-3.5 h-3.5" /> Detener
+          <div className="flex items-center gap-4 bg-primary-600 px-5 py-3 rounded-full">
+            <button onClick={stop} className="flex items-center gap-2 text-white text-sm font-semibold">
+              <StopIcon className="w-4 h-4" /> Detener
             </button>
-            <span className="text-primary-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
+            <span className="text-white font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
             <WaveAnimation small />
           </div>
         )}
         {recState === 'processing' && (
-          <div className="flex items-center gap-2 text-gray-500 text-sm">
+          <div className="flex items-center gap-3 text-primary-600 text-sm font-medium">
             <Spinner small /> Procesando...
           </div>
         )}
@@ -230,13 +311,22 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
 
   // ── State A — required fields missing ──
   return (
-    <div className="bg-primary-50 border border-primary-200 rounded-xl p-5 flex flex-col items-center gap-4">
+    <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300 rounded-2xl p-5 flex flex-col items-center gap-5">
       <div className="w-full">
-        <p className="text-sm font-semibold text-primary-900 mb-3">Para enviar el reporte, contanos:</p>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
+            <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <p className="text-sm font-bold text-amber-800">Para enviar, completá estos datos:</p>
+        </div>
         <ul className="space-y-2">
           {camposFaltantes.map(c => (
-            <li key={c.key} className="flex items-start gap-2 text-sm text-primary-700">
-              <span className="mt-0.5 text-primary-400 flex-shrink-0">•</span>
+            <li key={c.key} className="flex items-center gap-2 text-sm text-amber-900 bg-white/60 rounded-lg px-3 py-2">
+              <span className="w-5 h-5 rounded-full bg-amber-400 text-white flex items-center justify-center text-xs font-bold">?</span>
               {c.pregunta}
             </li>
           ))}
@@ -246,34 +336,34 @@ function MicBlock({ camposFaltantes, currentReport, onUpdated }) {
       {recState === 'idle' && (
         <button
           onClick={start}
-          className="w-16 h-16 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-white flex items-center justify-center shadow-lg hover:from-primary-500 hover:to-primary-700 active:scale-95 transition-all glow-effect"
+          className="w-20 h-20 rounded-full bg-gradient-to-br from-primary-400 via-primary-500 to-primary-700 text-white flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-all glow-effect"
         >
-          <MicIcon className="w-8 h-8" />
+          <MicIcon className="w-9 h-9" />
         </button>
       )}
 
       {recState === 'recording' && (
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-4">
           <div className="relative">
             <div className="absolute inset-0 rounded-full bg-primary-500 pulse-ring" />
             <button
               onClick={stop}
-              className="relative w-16 h-16 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
+              className="relative w-20 h-20 rounded-full bg-primary-600 text-white flex items-center justify-center shadow-xl active:scale-95 transition-all z-10"
             >
-              <StopIcon className="w-7 h-7" />
+              <StopIcon className="w-8 h-8" />
             </button>
           </div>
-          <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col items-center gap-2">
             <WaveAnimation />
-            <span className="text-primary-600 font-mono text-sm">0:{String(seconds).padStart(2, '0')}</span>
+            <span className="text-primary-700 font-mono text-lg font-bold">0:{String(seconds).padStart(2, '0')}</span>
           </div>
         </div>
       )}
 
       {recState === 'processing' && (
-        <div className="flex flex-col items-center gap-2 text-gray-600 text-sm">
+        <div className="flex flex-col items-center gap-3 text-primary-700">
           <Spinner />
-          <span>Procesando respuesta...</span>
+          <span className="font-medium">Procesando respuesta...</span>
         </div>
       )}
     </div>
@@ -335,14 +425,15 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
   };
 
   return (
-    <div className="w-full max-w-md flex flex-col gap-4 pb-4">
+    <div className="w-full max-w-md flex flex-col gap-5 pb-4">
+      {/* Header */}
       <div className="text-center">
-        <h2 className="text-base font-semibold text-gray-800">Revisá y editá el reporte</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Tocá el lápiz para corregir cualquier campo</p>
+        <h2 className="text-xl font-bold text-gray-900">Revisá tu reporte</h2>
+        <p className="text-sm text-gray-500 mt-1">Tocá el lápiz para corregir cualquier campo</p>
       </div>
 
       {/* Editable fields */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-100 overflow-hidden">
+      <div className="elevated-card rounded-2xl divide-y divide-gray-100 overflow-hidden">
         {Object.entries(FIELD_LABELS).map(([key, label]) => {
           const raw = formData[key];
           const display = displayVal(key, raw);
@@ -354,19 +445,20 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
           return (
             <div
               key={key}
-              className={`px-4 py-3 transition-colors ${showAmber ? 'bg-primary-50 border-l-2 border-primary-400' : ''}`}
+              className={`px-4 py-3.5 transition-colors ${showAmber ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-500' : ''}`}
             >
-              <div className="flex items-center gap-2 mb-1">
-                <p className={`text-xs uppercase tracking-wider font-medium ${showAmber ? 'text-primary-600' : 'text-gray-400'}`}>
+              <div className="flex items-center gap-2 mb-1.5">
+                <FieldIcon type={FIELD_ICONS[key]} className={`w-4 h-4 ${showAmber ? 'text-amber-600' : 'text-gray-400'}`} />
+                <p className={`text-xs uppercase tracking-wider font-semibold ${showAmber ? 'text-amber-700' : 'text-gray-500'}`}>
                   {label}
                 </p>
                 {showAmber && (
-                  <span className="text-[10px] font-semibold text-primary-500 bg-primary-100 px-1.5 py-0.5 rounded">
-                    Requerido
+                  <span className="text-[10px] font-bold text-white bg-amber-500 px-2 py-0.5 rounded-full">
+                    REQUERIDO
                   </span>
                 )}
               </div>
-              <div className="flex items-start justify-between gap-2">
+              <div className="flex items-start justify-between gap-3">
                 {isEditing ? (
                   <input
                     ref={inputRef}
@@ -375,16 +467,22 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
                     onChange={(e) => setEditValue(e.target.value)}
                     onBlur={saveEdit}
                     onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-                    className="flex-1 text-sm text-gray-800 border-b border-primary-500 outline-none pb-0.5 bg-transparent"
+                    className="flex-1 text-sm text-gray-900 border-b-2 border-primary-500 outline-none pb-1 bg-transparent font-medium"
                   />
                 ) : (
-                  <p className={`flex-1 text-sm ${display ? 'text-gray-800' : showAmber ? 'text-primary-400 italic' : 'text-gray-400 italic'}`}>
+                  <p className={`flex-1 text-sm ${display ? 'text-gray-800' : showAmber ? 'text-amber-500 italic font-medium' : 'text-gray-400 italic'}`}>
                     {display ?? 'Sin información'}
                   </p>
                 )}
                 <button
                   onClick={() => isEditing ? saveEdit() : startEdit(key)}
-                  className={`flex-shrink-0 p-1.5 rounded-full transition ${isEditing ? 'text-green-600 bg-green-50' : showAmber ? 'text-primary-400 hover:text-primary-600 hover:bg-primary-50' : 'text-gray-400 hover:text-primary-500 hover:bg-primary-50'}`}
+                  className={`flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition ${
+                    isEditing 
+                      ? 'text-white bg-green-500 hover:bg-green-600' 
+                      : showAmber 
+                        ? 'text-amber-600 bg-amber-100 hover:bg-amber-200' 
+                        : 'text-gray-500 bg-gray-100 hover:bg-gray-200 hover:text-primary-600'
+                  }`}
                 >
                   {isEditing ? <CheckIcon /> : <PencilIcon />}
                 </button>
@@ -402,29 +500,29 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
       />
 
       {/* Submit button */}
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-3">
         <button
           onClick={handleSubmit}
           disabled={!canSubmit || submitting}
-          className={`w-full py-3.5 rounded-full font-semibold text-base transition-all shadow-md
+          className={`w-full py-4 rounded-full font-bold text-lg transition-all shadow-lg
             ${canSubmit && !submitting
-              ? 'bg-gradient-to-r from-primary-500 to-accent text-white hover:from-primary-600 hover:to-primary-500 active:scale-[0.98]'
+              ? 'bg-gradient-to-r from-primary-500 via-primary-600 to-cyan-500 text-white hover:shadow-xl active:scale-[0.98]'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
         >
           {submitting ? (
-            <span className="flex items-center justify-center gap-2">
-              <Spinner small /> Enviando...
+            <span className="flex items-center justify-center gap-3">
+              <Spinner small light /> Enviando...
             </span>
           ) : 'Enviar reporte'}
         </button>
 
         {/* Counter hint — only shown when fields are missing */}
-        <p
-          className={`text-xs text-primary-600 text-center transition-opacity duration-300 ${faltanCount > 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        >
-          Falta completar {faltanCount} campo{faltanCount !== 1 ? 's' : ''} requerido{faltanCount !== 1 ? 's' : ''}
-        </p>
+        {faltanCount > 0 && (
+          <p className="text-sm text-amber-600 text-center font-medium">
+            Falta completar {faltanCount} campo{faltanCount !== 1 ? 's' : ''} requerido{faltanCount !== 1 ? 's' : ''}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -449,52 +547,57 @@ function ConfirmacionScreen({ reporte, onReset }) {
     : null;
 
   return (
-    <div className="w-full max-w-md flex flex-col gap-5 pb-4">
-      {/* Hero */}
-      <div className="flex flex-col items-center text-center gap-3 pt-2">
-        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-          <svg className="w-9 h-9 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <div className="w-full max-w-md flex flex-col gap-6 pb-4">
+      {/* Hero - Celebratory */}
+      <div className="flex flex-col items-center text-center gap-4 pt-4 celebrate">
+        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center shadow-xl">
+          <svg className="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
         </div>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Reporte enviado</h2>
-          <p className="text-sm text-gray-500 mt-1 max-w-xs">El responsable fue notificado y ya está gestionando tu reporte.</p>
+          <h2 className="text-2xl font-black text-gray-900">Reporte enviado</h2>
+          <p className="text-gray-600 mt-2 max-w-xs">El responsable fue notificado y ya está gestionando tu incidente.</p>
         </div>
       </div>
 
-      {/* Report card */}
-      <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-
-        {/* ID row */}
-        <div className="bg-gray-50 border-b border-gray-100 px-4 py-3 flex items-center justify-between gap-3">
-          <div>
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-0.5">ID del reporte</p>
-            <p className="font-mono font-bold text-gray-900 text-base">{reporte.id}</p>
+      {/* Report ID - Super prominent */}
+      <div className="elevated-card rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-primary-600 to-cyan-600 px-5 py-4">
+          <p className="text-primary-100 text-xs uppercase tracking-widest font-semibold mb-1">ID del reporte</p>
+          <div className="flex items-center justify-between gap-3">
+            <p className="font-mono font-black text-white text-2xl tracking-wide">{reporte.id}</p>
+            <button
+              onClick={copyId}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all ${
+                copied 
+                  ? 'bg-green-500 text-white' 
+                  : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
+            >
+              {copied ? 'Copiado' : 'Copiar'}
+            </button>
           </div>
-          <button
-            onClick={copyId}
-            className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${copied ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
-          >
-            {copied ? '✓ Copiado' : 'Copiar'}
-          </button>
         </div>
 
         <div className="divide-y divide-gray-100">
           {/* Fecha generación */}
           {fechaFormateada && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Fecha y hora del reporte</p>
-              <p className="text-sm text-gray-800">{fechaFormateada}</p>
+            <div className="px-5 py-3 flex items-center gap-3">
+              <FieldIcon type="calendar" className="w-5 h-5 text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Fecha y hora</p>
+                <p className="text-sm text-gray-800 font-medium">{fechaFormateada}</p>
+              </div>
             </div>
           )}
 
           {/* Tipo + Urgencia */}
-          <div className="px-4 py-3">
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2">Tipo / Urgencia</p>
+          <div className="px-5 py-3">
+            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-2">Tipo / Urgencia</p>
             <div className="flex flex-wrap gap-2">
               {reporte.tipo && (
-                <span className="bg-gradient-to-r from-primary-500 to-accent text-white text-xs font-semibold px-3 py-1 rounded-full">{reporte.tipo}</span>
+                <span className="bg-primary-600 text-white text-sm font-bold px-4 py-1.5 rounded-full">{reporte.tipo}</span>
               )}
               <UrgencyBadge urgencia={reporte.urgencia} />
             </div>
@@ -502,45 +605,57 @@ function ConfirmacionScreen({ reporte, onReset }) {
 
           {/* Área */}
           {reporte.area && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Área / Sector de trabajo</p>
-              <p className="text-sm text-gray-800">{reporte.area}</p>
+            <div className="px-5 py-3 flex items-center gap-3">
+              <FieldIcon type="building" className="w-5 h-5 text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Área</p>
+                <p className="text-sm text-gray-800 font-medium">{reporte.area}</p>
+              </div>
             </div>
           )}
 
           {/* Ubicación */}
           {reporte.ubicacion && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Ubicación exacta del incidente</p>
-              <p className="text-sm text-gray-800">{reporte.ubicacion}</p>
+            <div className="px-5 py-3 flex items-center gap-3">
+              <FieldIcon type="location" className="w-5 h-5 text-gray-400" />
+              <div>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Ubicación</p>
+                <p className="text-sm text-gray-800 font-medium">{reporte.ubicacion}</p>
+              </div>
             </div>
           )}
 
           {/* Descripción breve */}
           {reporte.descripcion_corta && (
-            <div className="px-4 py-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-1">Descripción breve</p>
-              <p className="text-sm text-gray-800">{reporte.descripcion_corta}</p>
+            <div className="px-5 py-3 flex items-start gap-3">
+              <FieldIcon type="text" className="w-5 h-5 text-gray-400 mt-0.5" />
+              <div>
+                <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold">Descripción</p>
+                <p className="text-sm text-gray-800 font-medium">{reporte.descripcion_corta}</p>
+              </div>
             </div>
           )}
 
           {/* Estado */}
-          <div className="px-4 py-3 flex items-center justify-between">
-            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">Estado</p>
-            <span className="bg-gray-100 text-gray-600 text-xs font-semibold px-3 py-1 rounded-full">
+          <div className="px-5 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="text-sm font-semibold text-gray-700">Estado</span>
+            </div>
+            <span className="bg-green-100 text-green-700 text-sm font-bold px-4 py-1.5 rounded-full">
               {reporte.estado ?? 'Enviado'}
             </span>
           </div>
         </div>
       </div>
 
-      <p className="text-xs text-gray-400 text-center">
-        Podés guardar el ID para hacer seguimiento de tu reporte.
+      <p className="text-sm text-gray-500 text-center">
+        Guardá el ID para hacer seguimiento de tu reporte.
       </p>
 
       <button
         onClick={onReset}
-        className="w-full py-3.5 bg-gradient-to-r from-primary-500 to-accent text-white rounded-full font-semibold text-base hover:from-primary-600 hover:to-primary-500 active:scale-[0.98] transition-all shadow-md"
+        className="w-full py-4 bg-gradient-to-r from-primary-500 via-primary-600 to-cyan-500 text-white rounded-full font-bold text-lg hover:shadow-xl active:scale-[0.98] transition-all shadow-lg"
       >
         Nuevo reporte
       </button>
@@ -560,54 +675,44 @@ function WelcomeScreen({ onConfirm }) {
 
   return (
     <div className="min-h-screen gradient-bg flex flex-col items-center justify-center px-6">
-      <div className="w-full max-w-sm flex flex-col items-center gap-8">
+      <div className="w-full max-w-sm flex flex-col items-center gap-10">
         {/* Logo */}
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center shadow-lg glow-effect">
-            <svg className="w-11 h-11 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="9" y="1" width="6" height="12" rx="3" />
-              <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-              <line x1="12" y1="19" x2="12" y2="23" />
-              <line x1="8" y1="23" x2="16" y2="23" />
-            </svg>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-xs font-medium text-primary-400 bg-primary-50 px-2 py-0.5 rounded-full">AI</span>
-            <p className="text-sm font-bold text-primary-600 tracking-wide">HU NOW</p>
-          </div>
-        </div>
+        <HuNowLogo size="lg" variant="light" />
 
-        {/* Heading */}
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Bienvenido</h1>
-          <p className="text-gray-500 text-sm mt-2">Ingresá tu legajo para continuar</p>
-        </div>
+        {/* Card */}
+        <div className="w-full glass-card rounded-3xl p-6 flex flex-col gap-5">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900">Bienvenido</h1>
+            <p className="text-gray-500 text-sm mt-1">Ingresá tu legajo para continuar</p>
+          </div>
 
-        {/* Input */}
-        <div className="w-full flex flex-col gap-3">
-          <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Ingresá tu legajo</label>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">Tu legajo</label>
             <input
               type="text"
               value={legajo}
               onChange={e => { setLegajo(e.target.value); setError(false); }}
               onKeyDown={e => e.key === 'Enter' && handleConfirm()}
-              placeholder="Juan123"
-              className={`w-full border rounded-xl px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition ${error ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-white'}`}
+              placeholder="Ej: Juan123"
+              className={`w-full border-2 rounded-xl px-4 py-3.5 text-base focus:outline-none focus:ring-0 transition ${
+                error 
+                  ? 'border-red-400 bg-red-50 focus:border-red-500' 
+                  : 'border-gray-200 bg-white focus:border-primary-500'
+              }`}
             />
-            {error && <p className="text-xs text-red-500">Ingresá tu legajo para continuar.</p>}
-            {!error && <p className="text-xs text-gray-400">Tu legajo se compone de tu primer nombre y número. Ejemplo: Juan123</p>}
+            {error && <p className="text-xs text-red-500 font-medium">Ingresá tu legajo para continuar.</p>}
+            {!error && <p className="text-xs text-gray-400">Tu legajo se compone de tu primer nombre y número.</p>}
           </div>
 
           <button
             onClick={handleConfirm}
-            className="w-full py-3.5 bg-gradient-to-r from-primary-500 to-accent text-white rounded-full font-semibold text-base hover:from-primary-600 hover:to-primary-500 active:scale-[0.98] transition-all shadow-md"
+            className="w-full py-4 bg-gradient-to-r from-primary-500 via-primary-600 to-cyan-500 text-white rounded-full font-bold text-lg hover:shadow-xl active:scale-[0.98] transition-all shadow-lg"
           >
             Continuar
           </button>
         </div>
 
-        <p className="text-xs text-gray-400 text-center">
+        <p className="text-xs text-primary-200 text-center">
           Tu legajo identifica tus reportes y no se comparte públicamente.
         </p>
       </div>
@@ -636,32 +741,36 @@ export default function App() {
 // ── Tab bar icons ──────────────────────────────────────────────────────────
 function TabBar({ active, onChange }) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-100 flex z-20 safe-area-inset-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 flex z-20 safe-area-inset-bottom shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
       <button
         onClick={() => onChange('reportar')}
-        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors
-          ${active === 'reportar' ? 'text-primary-500' : 'text-gray-400 hover:text-gray-600'}`}
+        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-semibold transition-colors
+          ${active === 'reportar' ? 'text-primary-600 bg-primary-50' : 'text-gray-400 hover:text-gray-600'}`}
       >
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="9" y="1" width="6" height="12" rx="3" />
-          <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
-          <line x1="12" y1="19" x2="12" y2="23" />
-          <line x1="8" y1="23" x2="16" y2="23" />
-        </svg>
+        <div className={`p-2 rounded-full ${active === 'reportar' ? 'bg-primary-100' : ''}`}>
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="9" y="1" width="6" height="12" rx="3" />
+            <path d="M19 10v1a7 7 0 0 1-14 0v-1" />
+            <line x1="12" y1="19" x2="12" y2="23" />
+            <line x1="8" y1="23" x2="16" y2="23" />
+          </svg>
+        </div>
         Reportar
       </button>
       <button
         onClick={() => onChange('mis-reportes')}
-        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-medium transition-colors
-          ${active === 'mis-reportes' ? 'text-primary-500' : 'text-gray-400 hover:text-gray-600'}`}
+        className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 text-xs font-semibold transition-colors
+          ${active === 'mis-reportes' ? 'text-primary-600 bg-primary-50' : 'text-gray-400 hover:text-gray-600'}`}
       >
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" y1="13" x2="8" y2="13" />
-          <line x1="16" y1="17" x2="8" y2="17" />
-          <polyline points="10 9 9 9 8 9" />
-        </svg>
+        <div className={`p-2 rounded-full ${active === 'mis-reportes' ? 'bg-primary-100' : ''}`}>
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+        </div>
         Mis reportes
       </button>
     </nav>
@@ -762,82 +871,75 @@ function HuNowApp({ legajo, onChangeUser }) {
   }, []);
 
   const isScrollable = state === STATES.REVIEWING || state === STATES.DONE;
+  const showDarkBg = state === STATES.IDLE || state === STATES.RECORDING || state === STATES.PROCESSING;
 
   return (
-    <div className="min-h-screen gradient-bg flex flex-col">
+    <div className={`min-h-screen flex flex-col ${showDarkBg ? 'gradient-bg' : 'gradient-bg-light'}`}>
       {/* Header */}
-      <header className="bg-gradient-to-r from-primary-500 to-primary-600 text-white px-4 py-4 flex items-center justify-between shadow-lg sticky top-0 z-10">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
-            <MicIcon className="w-5 h-5" />
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-medium bg-white/20 px-1.5 py-0.5 rounded">AI</span>
-            <h1 className="text-lg font-bold tracking-tight">HU NOW</h1>
-          </div>
-        </div>
+      <header className="bg-gradient-to-r from-primary-700 via-primary-600 to-cyan-600 text-white px-4 py-3 flex items-center justify-between shadow-xl sticky top-0 z-10">
+        <HuNowLogo size="sm" variant="light" />
         <button
           onClick={onChangeUser}
           title="Cambiar usuario"
-          className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 rounded-full px-3 py-1.5 transition"
+          className="flex items-center gap-2 bg-white/20 hover:bg-white/30 rounded-full px-4 py-2 transition"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
             <circle cx="12" cy="7" r="4" />
-            <path d="M22 11l-3-3-3 3" />
           </svg>
-          <span className="text-xs font-semibold">{legajo}</span>
+          <span className="text-sm font-semibold">{legajo}</span>
         </button>
       </header>
 
       {/* Tab: Mis reportes */}
       {activeTab === 'mis-reportes' && (
-        <div className="flex-1 flex flex-col pb-16 overflow-hidden">
+        <div className="flex-1 flex flex-col pb-20 overflow-hidden bg-gray-50">
           <MisReportes legajo={legajo} />
         </div>
       )}
 
       {/* Tab: Reportar */}
       {activeTab === 'reportar' && (
-      <main className={`flex-1 flex flex-col items-center px-4 py-6 pb-20 ${isScrollable ? '' : 'justify-center'}`}>
+      <main className={`flex-1 flex flex-col items-center px-4 py-6 pb-24 ${isScrollable ? '' : 'justify-center'}`}>
 
         {/* IDLE */}
         {state === STATES.IDLE && (
-          <div className="flex flex-col items-center gap-6 text-center">
+          <div className="flex flex-col items-center gap-8 text-center max-w-sm">
             <div>
-              <p className="text-gray-800 text-lg font-semibold">Tocá el botón y contanos qué pasó.</p>
-              <p className="text-gray-500 text-sm mt-1">Mencioná tu nombre, área, fecha y hora, lugar exacto y si alguien necesita atención médica.</p>
+              <h2 className="text-white text-2xl font-bold mb-2">Reportar un incidente</h2>
+              <p className="text-primary-200 text-base">Tocá el botón y contanos qué pasó. Mencioná tu nombre, área, fecha, lugar y si alguien necesita atención médica.</p>
             </div>
             <button
               onClick={startRecording}
-              className="relative w-20 h-20 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 text-white flex items-center justify-center shadow-lg hover:from-primary-500 hover:to-primary-700 active:scale-95 transition-all glow-effect"
+              className="relative w-24 h-24 rounded-full bg-gradient-to-br from-cyan-400 via-primary-500 to-primary-700 text-white flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all glow-effect"
             >
-              <MicIcon className="w-9 h-9" />
+              <MicIcon className="w-12 h-12" />
             </button>
+            <p className="text-primary-300 text-sm">Máximo 30 segundos de grabación</p>
           </div>
         )}
 
         {/* RECORDING */}
         {state === STATES.RECORDING && (
-          <div className="flex flex-col items-center gap-6 text-center">
+          <div className="flex flex-col items-center gap-8 text-center">
             <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-primary-500 pulse-ring" />
+              <div className="absolute inset-0 rounded-full bg-white/30 pulse-ring" />
               <button
                 onClick={stopRecording}
-                className="relative w-20 h-20 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-lg active:scale-95 transition-all z-10"
+                className="relative w-24 h-24 rounded-full bg-white text-primary-600 flex items-center justify-center shadow-2xl active:scale-95 transition-all z-10"
               >
-                <StopIcon className="w-8 h-8" />
+                <StopIcon className="w-10 h-10" />
               </button>
             </div>
             <WaveAnimation />
             <div>
-              <p className="text-primary-600 text-3xl font-mono font-bold tabular-nums">
+              <p className="text-white text-5xl font-mono font-black tabular-nums">
                 0:{String(seconds).padStart(2, '0')}
               </p>
-              <p className="text-gray-500 text-sm mt-1">Grabando... (máx {MAX_SECONDS}s)</p>
+              <p className="text-primary-200 text-base mt-2">Grabando... (máx {MAX_SECONDS}s)</p>
             </div>
-            <button onClick={stopRecording} className="mt-2 px-6 py-2 border border-primary-500 text-primary-500 rounded-full font-medium hover:bg-primary-50 transition">
-              Detener
+            <button onClick={stopRecording} className="px-8 py-3 bg-white/20 hover:bg-white/30 text-white rounded-full font-semibold transition">
+              Detener grabación
             </button>
           </div>
         )}
@@ -845,10 +947,10 @@ function HuNowApp({ legajo, onChangeUser }) {
         {/* PROCESSING */}
         {state === STATES.PROCESSING && (
           <div className="flex flex-col items-center gap-6 text-center">
-            <Spinner />
+            <Spinner light />
             <div>
-              <p className="text-gray-800 text-lg font-semibold">Procesando con AI...</p>
-              <p className="text-gray-500 text-sm mt-2">Transcribiendo · Clasificando · Generando reporte</p>
+              <p className="text-white text-xl font-bold">Procesando con AI...</p>
+              <p className="text-primary-200 text-sm mt-2">Transcribiendo - Clasificando - Generando reporte</p>
             </div>
           </div>
         )}
@@ -870,24 +972,23 @@ function HuNowApp({ legajo, onChangeUser }) {
         {/* ERROR */}
         {state === STATES.ERROR && (
           <div className="flex flex-col items-center gap-6 text-center max-w-sm">
-            <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
-              <span className="text-3xl">!</span>
+            <div className="w-20 h-20 rounded-full bg-red-500 flex items-center justify-center shadow-xl">
+              <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
             </div>
-            <p className="text-gray-800 text-lg font-semibold">
-              {errorMsg || 'No pudimos procesar el audio. ¿Intentamos de nuevo?'}
-            </p>
-            <button onClick={reset} className="px-8 py-3 bg-gradient-to-r from-primary-500 to-accent text-white rounded-full font-semibold hover:from-primary-600 hover:to-primary-500 active:scale-[0.98] transition-all">
+            <div>
+              <h3 className="text-white text-xl font-bold">Algo salió mal</h3>
+              <p className="text-primary-200 mt-2">
+                {errorMsg || 'No pudimos procesar el audio. ¿Intentamos de nuevo?'}
+              </p>
+            </div>
+            <button onClick={reset} className="px-10 py-4 bg-white text-primary-600 rounded-full font-bold text-lg hover:shadow-xl active:scale-[0.98] transition-all shadow-lg">
               Reintentar
             </button>
           </div>
         )}
-        {/* Footer */}
-        <footer className="text-center text-xs text-gray-400 py-4 mt-auto">
-          <div className="flex items-center justify-center gap-1.5">
-            <span className="text-primary-400">AI</span>
-            <span>Powered by Humand</span>
-          </div>
-        </footer>
       </main>
       )}
 
