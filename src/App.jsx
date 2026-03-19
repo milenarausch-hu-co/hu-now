@@ -444,22 +444,19 @@ function ReviewScreen({ initialReport, onSubmitDone, onError }) {
           return (
             <div
               key={key}
-              className={`px-4 py-4 transition-colors ${showAmber ? 'bg-amber-50 border-l-4 border-amber-500' : ''}`}
+              className={`px-5 py-4 transition-colors ${showAmber ? 'bg-amber-50 border-l-4 border-amber-500' : ''}`}
             >
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-[#0EA5E9] flex items-center justify-center flex-shrink-0">
-                  <FieldIcon type={FIELD_ICONS[key]} className="w-4 h-4 text-white" />
-                </div>
-                <p className={`text-xs uppercase tracking-wider font-bold ${showAmber ? 'text-amber-700' : 'text-[#64748B]'}`}>
+              <div className="flex items-center justify-between mb-2">
+                <p className={`text-sm font-bold uppercase tracking-wide ${showAmber ? 'text-amber-700' : 'text-[#0F2B5B]'}`}>
                   {label}
                 </p>
                 {showAmber && (
-                  <span className="text-[10px] font-bold text-white bg-amber-500 px-2 py-0.5 rounded-full ml-auto">
+                  <span className="text-[10px] font-bold text-white bg-amber-500 px-2 py-0.5 rounded-full">
                     REQUERIDO
                   </span>
                 )}
               </div>
-              <div className="flex items-start justify-between gap-3 ml-11">
+              <div className="flex items-start justify-between gap-3">
                 {isEditing ? (
                   <input
                     ref={inputRef}
@@ -595,11 +592,11 @@ function ConfirmacionScreen({ reporte, onReset }) {
 
           <div className="px-5 py-4">
             <p className="text-xs text-[#64748B] uppercase tracking-wider font-bold mb-3">Tipo / Urgencia</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {reporte.tipo && (
                 <span className="bg-[#0F2B5B] text-white text-sm font-bold px-4 py-2 rounded-full">{reporte.tipo}</span>
               )}
-              <UrgencyBadge urgencia={reporte.urgencia} />
+              {reporte.urgencia && <UrgencyBadge urgencia={reporte.urgencia} />}
             </div>
           </div>
 
